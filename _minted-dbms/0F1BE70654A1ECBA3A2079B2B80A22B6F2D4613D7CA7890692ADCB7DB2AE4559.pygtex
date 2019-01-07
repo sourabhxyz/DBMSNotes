@@ -1,0 +1,385 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{CREATE} \PYG{k}{TABLE} \PYG{n}{employee} \PYG{p}{(}
+  \PYG{n}{emp\PYGZus{}id} \PYG{n+nb}{INT} \PYG{k}{PRIMARY} \PYG{k}{KEY}\PYG{p}{,}
+  \PYG{n}{first\PYGZus{}name} \PYG{n+nb}{VARCHAR}\PYG{p}{(}\PYG{l+m+mi}{40}\PYG{p}{),}
+  \PYG{n}{last\PYGZus{}name} \PYG{n+nb}{VARCHAR}\PYG{p}{(}\PYG{l+m+mi}{40}\PYG{p}{),}
+  \PYG{n}{birth\PYGZus{}day} \PYG{n+nb}{DATE}\PYG{p}{,}
+  \PYG{n}{sex} \PYG{n+nb}{VARCHAR}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{),}
+  \PYG{n}{salary} \PYG{n+nb}{INT}\PYG{p}{,}
+  \PYG{n}{super\PYGZus{}id} \PYG{n+nb}{INT}\PYG{p}{,}
+  \PYG{n}{branch\PYGZus{}id} \PYG{n+nb}{INT}
+\PYG{p}{);}
+
+\PYG{k}{CREATE} \PYG{k}{TABLE} \PYG{n}{branch} \PYG{p}{(}
+  \PYG{n}{branch\PYGZus{}id} \PYG{n+nb}{INT} \PYG{k}{PRIMARY} \PYG{k}{KEY}\PYG{p}{,}
+  \PYG{n}{branch\PYGZus{}name} \PYG{n+nb}{VARCHAR}\PYG{p}{(}\PYG{l+m+mi}{40}\PYG{p}{),}
+  \PYG{n}{mgr\PYGZus{}id} \PYG{n+nb}{INT}\PYG{p}{,}
+  \PYG{n}{mgr\PYGZus{}start\PYGZus{}date} \PYG{n+nb}{DATE}\PYG{p}{,}
+  \PYG{k}{FOREIGN} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{mgr\PYGZus{}id}\PYG{p}{)} \PYG{k}{REFERENCES} \PYG{n}{employee}\PYG{p}{(}\PYG{n}{emp\PYGZus{}id}\PYG{p}{)} \PYG{k}{ON} \PYG{k}{DELETE} \PYG{k}{SET} \PYG{k}{NULL}
+\PYG{p}{);}
+
+\PYG{k}{ALTER} \PYG{k}{TABLE} \PYG{n}{employee}
+\PYG{k}{ADD} \PYG{k}{FOREIGN} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{branch\PYGZus{}id}\PYG{p}{)}
+\PYG{k}{REFERENCES} \PYG{n}{branch}\PYG{p}{(}\PYG{n}{branch\PYGZus{}id}\PYG{p}{)}
+\PYG{k}{ON} \PYG{k}{DELETE} \PYG{k}{SET} \PYG{k}{NULL}\PYG{p}{;}
+
+\PYG{k}{ALTER} \PYG{k}{TABLE} \PYG{n}{employee}
+\PYG{k}{ADD} \PYG{k}{FOREIGN} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{super\PYGZus{}id}\PYG{p}{)}
+\PYG{k}{REFERENCES} \PYG{n}{employee}\PYG{p}{(}\PYG{n}{emp\PYGZus{}id}\PYG{p}{)}
+\PYG{k}{ON} \PYG{k}{DELETE} \PYG{k}{SET} \PYG{k}{NULL}\PYG{p}{;}
+
+\PYG{k}{CREATE} \PYG{k}{TABLE} \PYG{n}{client} \PYG{p}{(}
+  \PYG{n}{client\PYGZus{}id} \PYG{n+nb}{INT} \PYG{k}{PRIMARY} \PYG{k}{KEY}\PYG{p}{,}
+  \PYG{n}{client\PYGZus{}name} \PYG{n+nb}{VARCHAR}\PYG{p}{(}\PYG{l+m+mi}{40}\PYG{p}{),}
+  \PYG{n}{branch\PYGZus{}id} \PYG{n+nb}{INT}\PYG{p}{,}
+  \PYG{k}{FOREIGN} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{branch\PYGZus{}id}\PYG{p}{)} \PYG{k}{REFERENCES} \PYG{n}{branch}\PYG{p}{(}\PYG{n}{branch\PYGZus{}id}\PYG{p}{)} \PYG{k}{ON} \PYG{k}{DELETE} \PYG{k}{SET} \PYG{k}{NULL}
+\PYG{p}{);}
+
+\PYG{k}{CREATE} \PYG{k}{TABLE} \PYG{n}{works\PYGZus{}with} \PYG{p}{(}
+  \PYG{n}{emp\PYGZus{}id} \PYG{n+nb}{INT}\PYG{p}{,}
+  \PYG{n}{client\PYGZus{}id} \PYG{n+nb}{INT}\PYG{p}{,}
+  \PYG{n}{total\PYGZus{}sales} \PYG{n+nb}{INT}\PYG{p}{,}
+  \PYG{k}{PRIMARY} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{emp\PYGZus{}id}\PYG{p}{,} \PYG{n}{client\PYGZus{}id}\PYG{p}{),}
+  \PYG{k}{FOREIGN} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{emp\PYGZus{}id}\PYG{p}{)} \PYG{k}{REFERENCES} \PYG{n}{employee}\PYG{p}{(}\PYG{n}{emp\PYGZus{}id}\PYG{p}{)} \PYG{k}{ON} \PYG{k}{DELETE} \PYG{k}{CASCADE}\PYG{p}{,}
+  \PYG{k}{FOREIGN} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{client\PYGZus{}id}\PYG{p}{)} \PYG{k}{REFERENCES} \PYG{n}{client}\PYG{p}{(}\PYG{n}{client\PYGZus{}id}\PYG{p}{)} \PYG{k}{ON} \PYG{k}{DELETE} \PYG{k}{CASCADE}
+\PYG{p}{);}
+
+\PYG{k}{CREATE} \PYG{k}{TABLE} \PYG{n}{branch\PYGZus{}supplier} \PYG{p}{(}
+  \PYG{n}{branch\PYGZus{}id} \PYG{n+nb}{INT}\PYG{p}{,}
+  \PYG{n}{supplier\PYGZus{}name} \PYG{n+nb}{VARCHAR}\PYG{p}{(}\PYG{l+m+mi}{40}\PYG{p}{),}
+  \PYG{n}{supply\PYGZus{}type} \PYG{n+nb}{VARCHAR}\PYG{p}{(}\PYG{l+m+mi}{40}\PYG{p}{),}
+  \PYG{k}{PRIMARY} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{branch\PYGZus{}id}\PYG{p}{,} \PYG{n}{supplier\PYGZus{}name}\PYG{p}{),}
+  \PYG{k}{FOREIGN} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{branch\PYGZus{}id}\PYG{p}{)} \PYG{k}{REFERENCES} \PYG{n}{branch}\PYG{p}{(}\PYG{n}{branch\PYGZus{}id}\PYG{p}{)} \PYG{k}{ON} \PYG{k}{DELETE} \PYG{k}{CASCADE}
+\PYG{p}{);}
+
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Corporate}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{100}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}David\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Wallace\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1967\PYGZhy{}11\PYGZhy{}17\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{250000}\PYG{p}{,} \PYG{k}{NULL}\PYG{p}{,} \PYG{k}{NULL}\PYG{p}{);}
+
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Corporate\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{100}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}2006\PYGZhy{}02\PYGZhy{}09\PYGZsq{}}\PYG{p}{);}
+
+\PYG{k}{UPDATE} \PYG{n}{employee}
+\PYG{k}{SET} \PYG{n}{branch\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{1}
+\PYG{k}{WHERE} \PYG{n}{emp\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{100}\PYG{p}{;}
+
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{101}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Jan\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Levinson\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1961\PYGZhy{}05\PYGZhy{}11\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{110000}\PYG{p}{,} \PYG{l+m+mi}{100}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{);}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Scranton}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{102}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Michael\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Scott\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1964\PYGZhy{}03\PYGZhy{}15\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{75000}\PYG{p}{,} \PYG{l+m+mi}{100}\PYG{p}{,} \PYG{k}{NULL}\PYG{p}{);}
+
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Scranton\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{102}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1992\PYGZhy{}04\PYGZhy{}06\PYGZsq{}}\PYG{p}{);}
+
+\PYG{k}{UPDATE} \PYG{n}{employee}
+\PYG{k}{SET} \PYG{n}{branch\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{2}
+\PYG{k}{WHERE} \PYG{n}{emp\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{102}\PYG{p}{;}
+
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{103}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Angela\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Martin\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1971\PYGZhy{}06\PYGZhy{}25\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{63000}\PYG{p}{,} \PYG{l+m+mi}{102}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{104}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Kelly\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Kapoor\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1980\PYGZhy{}02\PYGZhy{}05\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{55000}\PYG{p}{,} \PYG{l+m+mi}{102}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{105}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Stanley\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Hudson\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1958\PYGZhy{}02\PYGZhy{}19\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{69000}\PYG{p}{,} \PYG{l+m+mi}{102}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{);}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Stamford}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{106}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Josh\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Porter\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1969\PYGZhy{}09\PYGZhy{}05\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{78000}\PYG{p}{,} \PYG{l+m+mi}{100}\PYG{p}{,} \PYG{k}{NULL}\PYG{p}{);}
+
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Stamford\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{106}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1998\PYGZhy{}02\PYGZhy{}13\PYGZsq{}}\PYG{p}{);}
+
+\PYG{k}{UPDATE} \PYG{n}{employee}
+\PYG{k}{SET} \PYG{n}{branch\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{3}
+\PYG{k}{WHERE} \PYG{n}{emp\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{106}\PYG{p}{;}
+
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{107}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Andy\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Bernard\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1973\PYGZhy{}07\PYGZhy{}22\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{65000}\PYG{p}{,} \PYG{l+m+mi}{106}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{108}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Jim\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Halpert\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1978\PYGZhy{}10\PYGZhy{}01\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{71000}\PYG{p}{,} \PYG{l+m+mi}{106}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{);}
+
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} BRANCH SUPPLIER}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch\PYGZus{}supplier} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Hammer Mill\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Paper\PYGZsq{}}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch\PYGZus{}supplier} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Uni\PYGZhy{}ball\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Writing Utensils\PYGZsq{}}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch\PYGZus{}supplier} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Patriot Paper\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Paper\PYGZsq{}}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch\PYGZus{}supplier} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}J.T. Forms \PYGZam{} Labels\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Custom Forms\PYGZsq{}}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch\PYGZus{}supplier} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Uni\PYGZhy{}ball\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Writing Utensils\PYGZsq{}}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch\PYGZus{}supplier} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Hammer Mill\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Paper\PYGZsq{}}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch\PYGZus{}supplier} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Stamford Lables\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Custom Forms\PYGZsq{}}\PYG{p}{);}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} CLIENT}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{client} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{400}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Dunmore Highschool\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{client} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{401}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Lackawana Country\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{client} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{402}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}FedEx\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{client} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{403}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}John Daly Law, LLC\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{client} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{404}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Scranton Whitepages\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{client} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{405}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Times Newspaper\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{client} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{406}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}FedEx\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{);}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} WORKS\PYGZus{}WITH}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{105}\PYG{p}{,} \PYG{l+m+mi}{400}\PYG{p}{,} \PYG{l+m+mi}{55000}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{102}\PYG{p}{,} \PYG{l+m+mi}{401}\PYG{p}{,} \PYG{l+m+mi}{267000}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{108}\PYG{p}{,} \PYG{l+m+mi}{402}\PYG{p}{,} \PYG{l+m+mi}{22500}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{107}\PYG{p}{,} \PYG{l+m+mi}{403}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{108}\PYG{p}{,} \PYG{l+m+mi}{403}\PYG{p}{,} \PYG{l+m+mi}{12000}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{105}\PYG{p}{,} \PYG{l+m+mi}{404}\PYG{p}{,} \PYG{l+m+mi}{33000}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{107}\PYG{p}{,} \PYG{l+m+mi}{405}\PYG{p}{,} \PYG{l+m+mi}{26000}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{102}\PYG{p}{,} \PYG{l+m+mi}{406}\PYG{p}{,} \PYG{l+m+mi}{15000}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{105}\PYG{p}{,} \PYG{l+m+mi}{406}\PYG{p}{,} \PYG{l+m+mi}{130000}\PYG{p}{);}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all employees}
+\PYG{k}{SELECT} \PYG{o}{*}
+\PYG{k}{FROM} \PYG{n}{employee}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all clients}
+\PYG{k}{SELECT} \PYG{o}{*}
+\PYG{k}{FROM} \PYG{n}{clients}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all employees ordered by salary}
+\PYG{k}{SELECT} \PYG{o}{*}
+\PYG{k}{from} \PYG{n}{employee}
+\PYG{k}{ORDER} \PYG{k}{BY} \PYG{n}{salary} \PYG{k}{ASC}\PYG{o}{/}\PYG{k}{DESC}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all employees ordered by sex then name}
+\PYG{k}{SELECT} \PYG{o}{*}
+\PYG{k}{from} \PYG{n}{employee}
+\PYG{k}{ORDER} \PYG{k}{BY} \PYG{n}{sex}\PYG{p}{,} \PYG{n}{name}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the first 5 employees in the table}
+\PYG{k}{SELECT} \PYG{o}{*}
+\PYG{k}{from} \PYG{n}{employee}
+\PYG{k}{LIMIT} \PYG{l+m+mi}{5}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the first and last names of all employees}
+\PYG{k}{SELECT} \PYG{n}{first\PYGZus{}name}\PYG{p}{,} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{last\PYGZus{}name}
+\PYG{k}{FROM} \PYG{n}{employee}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the forename and surnames names of all employees}
+\PYG{k}{SELECT} \PYG{n}{first\PYGZus{}name} \PYG{k}{AS} \PYG{n}{forename}\PYG{p}{,} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{last\PYGZus{}name} \PYG{k}{AS} \PYG{n}{surname}
+\PYG{k}{FROM} \PYG{n}{employee}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find out all the different genders}
+\PYG{k}{SELECT} \PYG{n}{DISCINCT} \PYG{n}{sex}
+\PYG{k}{FROM} \PYG{n}{employee}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all male employees}
+\PYG{k}{SELECT} \PYG{o}{*}
+\PYG{k}{FROM} \PYG{n}{employee}
+\PYG{k}{WHERE} \PYG{n}{sex} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all employees at branch 2}
+\PYG{k}{SELECT} \PYG{o}{*}
+\PYG{k}{FROM} \PYG{n}{employee}
+\PYG{k}{WHERE} \PYG{n}{branch\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{2}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all employee\PYGZsq{}s id\PYGZsq{}s and names who were born after 1969}
+\PYG{k}{SELECT} \PYG{n}{emp\PYGZus{}id}\PYG{p}{,} \PYG{n}{first\PYGZus{}name}\PYG{p}{,} \PYG{n}{last\PYGZus{}name}
+\PYG{k}{FROM} \PYG{n}{employee}
+\PYG{k}{WHERE} \PYG{n}{birth\PYGZus{}day} \PYG{o}{\PYGZgt{}=} \PYG{l+m+mi}{1970}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{01}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{01}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all female employees at branch 2}
+\PYG{k}{SELECT} \PYG{o}{*}
+\PYG{k}{FROM} \PYG{n}{employee}
+\PYG{k}{WHERE} \PYG{n}{branch\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{2} \PYG{k}{AND} \PYG{n}{sex} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all employees who are female \PYGZam{} born after 1969 or who make over 80000}
+\PYG{k}{SELECT} \PYG{o}{*}
+\PYG{k}{FROM} \PYG{n}{employee}
+\PYG{k}{WHERE} \PYG{p}{(}\PYG{n}{birth\PYGZus{}day} \PYG{o}{\PYGZgt{}=} \PYG{l+s+s1}{\PYGZsq{}1970\PYGZhy{}01\PYGZhy{}01\PYGZsq{}} \PYG{k}{AND} \PYG{n}{sex} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}}\PYG{p}{)} \PYG{k}{OR} \PYG{n}{salary} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{80000}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all employees born between 1970 and 1975}
+\PYG{k}{SELECT} \PYG{o}{*}
+\PYG{k}{FROM} \PYG{n}{employee}
+\PYG{k}{WHERE} \PYG{n}{birth\PYGZus{}day} \PYG{k}{BETWEEN} \PYG{l+s+s1}{\PYGZsq{}1970\PYGZhy{}01\PYGZhy{}01\PYGZsq{}} \PYG{k}{AND} \PYG{l+s+s1}{\PYGZsq{}1975\PYGZhy{}01\PYGZhy{}01\PYGZsq{}}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all employees named Jim, Michael, Johnny or David}
+\PYG{k}{SELECT} \PYG{o}{*}
+\PYG{k}{FROM} \PYG{n}{employee}
+\PYG{k}{WHERE} \PYG{n}{first\PYGZus{}name} \PYG{k}{IN} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Jim\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Michael\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Johnny\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}David\PYGZsq{}}\PYG{p}{);}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Functions}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the number of employees}
+\PYG{k}{SELECT} \PYG{k}{COUNT}\PYG{p}{(}\PYG{n}{super\PYGZus{}id}\PYG{p}{)}
+\PYG{k}{FROM} \PYG{n}{employee}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the average of all employee\PYGZsq{}s salaries}
+\PYG{k}{SELECT} \PYG{k}{AVG}\PYG{p}{(}\PYG{n}{salary}\PYG{p}{)}
+\PYG{k}{FROM} \PYG{n}{employee}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the sum of all employee\PYGZsq{}s salaries}
+\PYG{k}{SELECT} \PYG{k}{SUM}\PYG{p}{(}\PYG{n}{salary}\PYG{p}{)}
+\PYG{k}{FROM} \PYG{n}{employee}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Aggregation.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find out how many males and females there are}
+\PYG{k}{SELECT} \PYG{k}{COUNT}\PYG{p}{(}\PYG{n}{sex}\PYG{p}{),} \PYG{n}{sex}
+\PYG{k}{FROM} \PYG{n}{employee}
+\PYG{k}{GROUP} \PYG{k}{BY} \PYG{n}{sex}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the total sales of each salesman}
+\PYG{k}{SELECT} \PYG{k}{SUM}\PYG{p}{(}\PYG{n}{total\PYGZus{}sales}\PYG{p}{),} \PYG{n}{emp\PYGZus{}id}
+\PYG{k}{FROM} \PYG{n}{works\PYGZus{}with}
+\PYG{k}{GROUP} \PYG{k}{BY} \PYG{n}{client\PYGZus{}id}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the total amount of money spent by each client}
+\PYG{k}{SELECT} \PYG{k}{SUM}\PYG{p}{(}\PYG{n}{total\PYGZus{}sales}\PYG{p}{),} \PYG{n}{client\PYGZus{}id}
+\PYG{k}{FROM} \PYG{n}{works\PYGZus{}with}
+\PYG{k}{GROUP} \PYG{k}{BY} \PYG{n}{client\PYGZus{}id}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Wildcards}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} \PYGZpc{} = any \PYGZsh{} characters, \PYGZus{} = one character}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find any client\PYGZsq{}s who are an LLC}
+\PYG{k}{SELECT} \PYG{o}{*}
+\PYG{k}{FROM} \PYG{n}{client}
+\PYG{k}{WHERE} \PYG{n}{client\PYGZus{}name} \PYG{k}{LIKE} \PYG{l+s+s1}{\PYGZsq{}\PYGZpc{}LLC\PYGZsq{}}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find any branch suppliers who are in the label business}
+\PYG{k}{SELECT} \PYG{o}{*}
+\PYG{k}{FROM} \PYG{n}{branch\PYGZus{}supplier}
+\PYG{k}{WHERE} \PYG{n}{supplier\PYGZus{}name} \PYG{k}{LIKE} \PYG{l+s+s1}{\PYGZsq{}\PYGZpc{} Label\PYGZpc{}\PYGZsq{}}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find any employee born on the 10th day of the month}
+\PYG{k}{SELECT} \PYG{o}{*}
+\PYG{k}{FROM} \PYG{n}{employee}
+\PYG{k}{WHERE} \PYG{n}{birth\PYGZus{}day} \PYG{k}{LIKE} \PYG{l+s+s1}{\PYGZsq{}\PYGZus{}\PYGZus{}\PYGZus{}\PYGZus{}\PYGZus{}10\PYGZpc{}\PYGZsq{}}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find any clients who are schools}
+\PYG{k}{SELECT} \PYG{o}{*}
+\PYG{k}{FROM} \PYG{n}{client}
+\PYG{k}{WHERE} \PYG{n}{client\PYGZus{}name} \PYG{k}{LIKE} \PYG{l+s+s1}{\PYGZsq{}\PYGZpc{}Highschool\PYGZpc{}\PYGZsq{}}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Union}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find a list of employee and branch names}
+\PYG{k}{SELECT} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{first\PYGZus{}name} \PYG{k}{AS} \PYG{n}{Employee\PYGZus{}Branch\PYGZus{}Names}
+\PYG{k}{FROM} \PYG{n}{employee}
+\PYG{k}{UNION}
+\PYG{k}{SELECT} \PYG{n}{branch}\PYG{p}{.}\PYG{n}{branch\PYGZus{}name}
+\PYG{k}{FROM} \PYG{n}{branch}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find a list of all clients \PYGZam{} branch suppliers\PYGZsq{} names}
+\PYG{k}{SELECT} \PYG{n}{client}\PYG{p}{.}\PYG{n}{client\PYGZus{}name} \PYG{k}{AS} \PYG{n}{Non}\PYG{o}{\PYGZhy{}}\PYG{n}{Employee\PYGZus{}Entities}\PYG{p}{,} \PYG{n}{client}\PYG{p}{.}\PYG{n}{branch\PYGZus{}id} \PYG{k}{AS} \PYG{n}{Branch\PYGZus{}ID}
+\PYG{k}{FROM} \PYG{n}{client}
+\PYG{k}{UNION} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} both above and below thing should have same number of columns and same data type respectively}
+\PYG{k}{SELECT} \PYG{n}{branch\PYGZus{}supplier}\PYG{p}{.}\PYG{n}{supplier\PYGZus{}name}\PYG{p}{,} \PYG{n}{branch\PYGZus{}supplier}\PYG{p}{.}\PYG{n}{branch\PYGZus{}id}
+\PYG{k}{FROM} \PYG{n}{branch\PYGZus{}supplier}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} JOINS (used to combine rows from two or more tables based on the related columns)}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Add the extra branch}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+s+ss}{\PYGZdq{}Buffalo\PYGZdq{}}\PYG{p}{,} \PYG{k}{NULL}\PYG{p}{,} \PYG{k}{NULL}\PYG{p}{);}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all branches and the names of their managers}
+\PYG{k}{SELECT} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{emp\PYGZus{}id}\PYG{p}{,} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{first\PYGZus{}name}\PYG{p}{,} \PYG{n}{branch}\PYG{p}{.}\PYG{n}{branch\PYGZus{}name}
+\PYG{k}{FROM} \PYG{n}{employee}
+\PYG{k}{JOIN} \PYG{n}{branch}    \PYG{c+c1}{\PYGZhy{}\PYGZhy{} LEFT JOIN (when we use LEFT JOIN all the rows from the left table gets included as well, similarly for RIGHT JOIN), RIGHT JOIN  (we added buffalo just so that we can see difference in case of RIGHT JOIN)}
+\PYG{k}{ON} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{emp\PYGZus{}id} \PYG{o}{=} \PYG{n}{branch}\PYG{p}{.}\PYG{n}{mgr\PYGZus{}id}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} nested queries}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find names of all employees who have sold over 50,000}
+\PYG{k}{SELECT} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{first\PYGZus{}name}\PYG{p}{,} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{last\PYGZus{}name}
+\PYG{k}{FROM} \PYG{n}{employee}
+\PYG{k}{WHERE} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{emp\PYGZus{}id} \PYG{k}{IN} \PYG{p}{(}\PYG{k}{SELECT} \PYG{n}{works\PYGZus{}with}\PYG{p}{.}\PYG{n}{emp\PYGZus{}id}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} note that first sql will execute the part which is inside \PYGZdq{}()\PYGZdq{}}
+                          \PYG{k}{FROM} \PYG{n}{works\PYGZus{}with}
+                          \PYG{k}{WHERE} \PYG{n}{works\PYGZus{}with}\PYG{p}{.}\PYG{n}{total\PYGZus{}sales} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{50000}\PYG{p}{);}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all clients who are handles by the branch that Michael Scott manages}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Assume you know Michael\PYGZsq{}s ID}
+\PYG{k}{SELECT} \PYG{n}{client}\PYG{p}{.}\PYG{n}{client\PYGZus{}id}\PYG{p}{,} \PYG{n}{client}\PYG{p}{.}\PYG{n}{client\PYGZus{}name}
+\PYG{k}{FROM} \PYG{n}{client}
+\PYG{k}{WHERE} \PYG{n}{client}\PYG{p}{.}\PYG{n}{branch\PYGZus{}id} \PYG{o}{=} \PYG{p}{(}\PYG{k}{SELECT} \PYG{n}{branch}\PYG{p}{.}\PYG{n}{branch\PYGZus{}id}
+                          \PYG{k}{FROM} \PYG{n}{branch}
+                          \PYG{k}{WHERE} \PYG{n}{branch}\PYG{p}{.}\PYG{n}{mgr\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{102}\PYG{p}{);}
+
+ \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all clients who are handles by the branch that Michael Scott manages}
+ \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Assume you DONT\PYGZsq{}T know Michael\PYGZsq{}s ID}
+ \PYG{k}{SELECT} \PYG{n}{client}\PYG{p}{.}\PYG{n}{client\PYGZus{}id}\PYG{p}{,} \PYG{n}{client}\PYG{p}{.}\PYG{n}{client\PYGZus{}name}
+ \PYG{k}{FROM} \PYG{n}{client}
+ \PYG{k}{WHERE} \PYG{n}{client}\PYG{p}{.}\PYG{n}{branch\PYGZus{}id} \PYG{o}{=} \PYG{p}{(}\PYG{k}{SELECT} \PYG{n}{branch}\PYG{p}{.}\PYG{n}{branch\PYGZus{}id}
+                           \PYG{k}{FROM} \PYG{n}{branch}
+                           \PYG{k}{WHERE} \PYG{n}{branch}\PYG{p}{.}\PYG{n}{mgr\PYGZus{}id} \PYG{o}{=} \PYG{p}{(}\PYG{k}{SELECT} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{emp\PYGZus{}id}
+                                                  \PYG{k}{FROM} \PYG{n}{employee}
+                                                  \PYG{k}{WHERE} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{first\PYGZus{}name} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}Michael\PYGZsq{}} \PYG{k}{AND} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{last\PYGZus{}name} \PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}Scott\PYGZsq{}}
+                                                  \PYG{k}{LIMIT} \PYG{l+m+mi}{1}\PYG{p}{));}
+
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the names of employees who work with clients handled by the scranton branch}
+\PYG{k}{SELECT} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{first\PYGZus{}name}\PYG{p}{,} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{last\PYGZus{}name}
+\PYG{k}{FROM} \PYG{n}{employee}
+\PYG{k}{WHERE} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{emp\PYGZus{}id} \PYG{k}{IN} \PYG{p}{(}
+                         \PYG{k}{SELECT} \PYG{n}{works\PYGZus{}with}\PYG{p}{.}\PYG{n}{emp\PYGZus{}id}
+                         \PYG{k}{FROM} \PYG{n}{works\PYGZus{}with}
+                         \PYG{p}{)}
+\PYG{k}{AND} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{branch\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{2}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the names of all clients who have spent more than 100,000 dollars}
+\PYG{k}{SELECT} \PYG{n}{client}\PYG{p}{.}\PYG{n}{client\PYGZus{}name}
+\PYG{k}{FROM} \PYG{n}{client}
+\PYG{k}{WHERE} \PYG{n}{client}\PYG{p}{.}\PYG{n}{client\PYGZus{}id} \PYG{k}{IN} \PYG{p}{(}
+                          \PYG{k}{SELECT} \PYG{n}{client\PYGZus{}id}
+                          \PYG{k}{FROM} \PYG{p}{(}
+                                \PYG{k}{SELECT} \PYG{k}{SUM}\PYG{p}{(}\PYG{n}{works\PYGZus{}with}\PYG{p}{.}\PYG{n}{total\PYGZus{}sales}\PYG{p}{)} \PYG{k}{AS} \PYG{n}{totals}\PYG{p}{,} \PYG{n}{client\PYGZus{}id}
+                                \PYG{k}{FROM} \PYG{n}{works\PYGZus{}with}
+                                \PYG{k}{GROUP} \PYG{k}{BY} \PYG{n}{client\PYGZus{}id}\PYG{p}{)} \PYG{k}{AS} \PYG{n}{total\PYGZus{}client\PYGZus{}sales}
+                          \PYG{k}{WHERE} \PYG{n}{totals} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{100000}
+\PYG{p}{);}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} deleting entries in the table when they have foreign keys associated to them}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} ON DELETE NULL means that say if we delete Michael Scott then second entry in the branch table will get mgr\PYGZus{}id set to NULL whereas in ON DELETE CASCADE the entire row will get deleted in branch table. Use ON DELETE CASCADE when that foreign key is very important like say it forms a primary key.}
+
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} CREATE}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}     TRIGGER `event\PYGZus{}name` BEFORE/AFTER INSERT/UPDATE/DELETE}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}     ON `database`.`table`}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}     FOR EACH ROW BEGIN}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 		\PYGZhy{}\PYGZhy{} trigger body}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 		\PYGZhy{}\PYGZhy{} this code is applied to every}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 		\PYGZhy{}\PYGZhy{} inserted/updated/deleted row}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}     END;}
+
+\PYG{k}{CREATE} \PYG{k}{TABLE} \PYG{n}{trigger\PYGZus{}test} \PYG{p}{(}
+     \PYG{n}{message} \PYG{n+nb}{VARCHAR}\PYG{p}{(}\PYG{l+m+mi}{100}\PYG{p}{)}
+\PYG{p}{);}
+
+
+\PYG{k}{DELIMITER} \PYG{err}{\PYGZdl{}\PYGZdl{}}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} changing delimiter from semicolon to \PYGZdl{}\PYGZdl{} as we will be using semicolon inside and we don\PYGZsq{}t want sql to think that when we put semicolon we are done with our trigger}
+\PYG{k}{CREATE}
+    \PYG{k}{TRIGGER} \PYG{n}{my\PYGZus{}trigger} \PYG{k}{BEFORE} \PYG{k}{INSERT}
+    \PYG{k}{ON} \PYG{n}{employee}
+    \PYG{k}{FOR} \PYG{k}{EACH} \PYG{k}{ROW} \PYG{k}{BEGIN}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} for each new item that is inserted}
+        \PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{trigger\PYGZus{}test} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}added new employee\PYGZsq{}}\PYG{p}{);}
+    \PYG{k}{END}\PYG{err}{\PYGZdl{}\PYGZdl{}}
+\PYG{k}{DELIMITER} \PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} changing delimiter back to semi colon.}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee}
+\PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{109}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Oscar\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Martinez\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1968\PYGZhy{}02\PYGZhy{}19\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{69000}\PYG{p}{,} \PYG{l+m+mi}{106}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{);}
+
+
+\PYG{k}{DELIMITER} \PYG{err}{\PYGZdl{}\PYGZdl{}}
+\PYG{k}{CREATE}
+    \PYG{k}{TRIGGER} \PYG{n}{my\PYGZus{}trigger} \PYG{k}{BEFORE} \PYG{k}{INSERT}
+    \PYG{k}{ON} \PYG{n}{employee}
+    \PYG{k}{FOR} \PYG{k}{EACH} \PYG{k}{ROW} \PYG{k}{BEGIN}
+        \PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{trigger\PYGZus{}test} \PYG{k}{VALUES}\PYG{p}{(}\PYG{k}{NEW}\PYG{p}{.}\PYG{n}{first\PYGZus{}name}\PYG{p}{);}
+    \PYG{k}{END}\PYG{err}{\PYGZdl{}\PYGZdl{}}
+\PYG{k}{DELIMITER} \PYG{p}{;}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee}
+\PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{110}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Kevin\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Malone\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1978\PYGZhy{}02\PYGZhy{}19\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{69000}\PYG{p}{,} \PYG{l+m+mi}{106}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{);}
+
+\PYG{k}{DELIMITER} \PYG{err}{\PYGZdl{}\PYGZdl{}}
+\PYG{k}{CREATE}
+    \PYG{k}{TRIGGER} \PYG{n}{my\PYGZus{}trigger} \PYG{k}{BEFORE} \PYG{k}{INSERT}
+    \PYG{k}{ON} \PYG{n}{employee}
+    \PYG{k}{FOR} \PYG{k}{EACH} \PYG{k}{ROW} \PYG{k}{BEGIN}
+         \PYG{k}{IF} \PYG{k}{NEW}\PYG{p}{.}\PYG{n}{sex} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}} \PYG{k}{THEN}
+               \PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{trigger\PYGZus{}test} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}added male employee\PYGZsq{}}\PYG{p}{);}
+         \PYG{n}{ELSEIF} \PYG{k}{NEW}\PYG{p}{.}\PYG{n}{sex} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}} \PYG{k}{THEN}
+               \PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{trigger\PYGZus{}test} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}added female\PYGZsq{}}\PYG{p}{);}
+         \PYG{k}{ELSE}
+               \PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{trigger\PYGZus{}test} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}added other employee\PYGZsq{}}\PYG{p}{);}
+         \PYG{k}{END} \PYG{k}{IF}\PYG{p}{;}
+    \PYG{k}{END}\PYG{err}{\PYGZdl{}\PYGZdl{}}
+\PYG{k}{DELIMITER} \PYG{p}{;}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee}
+\PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{111}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Pam\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Beesly\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1988\PYGZhy{}02\PYGZhy{}19\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{69000}\PYG{p}{,} \PYG{l+m+mi}{106}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{);}
+
+
+\PYG{k}{DROP} \PYG{k}{TRIGGER} \PYG{n}{my\PYGZus{}trigger}\PYG{p}{;}
+\end{Verbatim}

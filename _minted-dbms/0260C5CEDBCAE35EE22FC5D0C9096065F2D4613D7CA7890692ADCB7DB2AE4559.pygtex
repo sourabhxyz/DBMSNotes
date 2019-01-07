@@ -1,0 +1,32 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{create} \PYG{k}{database} \PYG{n}{girrafe}\PYG{p}{;}
+
+\PYG{n+nb}{INT} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} whole numbers}
+\PYG{n+nb}{DECIMAL}\PYG{p}{(}\PYG{n}{M}\PYG{p}{,} \PYG{n}{N}\PYG{p}{)} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} M is the total no. of digits and N is the no. of digits after the decimal point.}
+\PYG{n}{VALCHAR}\PYG{p}{(}\PYG{n}{l}\PYG{p}{)} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} String of length l.}
+\PYG{n+nb}{BLOB} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Binary Large Object}
+\PYG{n+nb}{DATE} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} \PYGZsq{}YYYY\PYGZhy{}MM\PYGZhy{}DD\PYGZsq{}}
+\PYG{k}{TIMESTAMP} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} \PYGZsq{}YYYY\PYGZhy{}MM\PYGZhy{}DD HH:MM:SS\PYGZsq{}}
+
+
+\PYG{k}{CREATE} \PYG{k}{TABLE} \PYG{n}{student} \PYG{p}{(}
+    \PYG{n}{student\PYGZus{}id} \PYG{n+nb}{INT} \PYG{k}{PRIMARY} \PYG{k}{KEY}\PYG{p}{,}
+    \PYG{n}{name} \PYG{n+nb}{VARCHAR} \PYG{p}{(}\PYG{l+m+mi}{30}\PYG{p}{),}
+    \PYG{n}{major} \PYG{n+nb}{VARCHAR} \PYG{p}{(}\PYG{l+m+mi}{20}\PYG{p}{)}
+\PYG{p}{);}
+
+\PYG{k}{DESCRIBE} \PYG{n}{student}\PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Describes our table}
+
+\PYG{k}{DROP} \PYG{k}{TABLE} \PYG{n}{student}\PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Deletes our table}
+
+\PYG{k}{ALTER} \PYG{k}{TABLE} \PYG{n}{student} \PYG{k}{ADD} \PYG{n}{gpa} \PYG{n+nb}{DECIMAL} \PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{);}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Add a column to our table}
+
+\PYG{k}{ALTER} \PYG{k}{TABLE} \PYG{n}{student} \PYG{k}{DROP} \PYG{k}{COLUMN} \PYG{n}{gpa}\PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} drops our gpa column}
+
+\PYG{k}{SELECT} \PYG{o}{*} \PYG{k}{FROM} \PYG{n}{student}\PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} show all rows}
+
+
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{student} \PYG{k}{VALUES} \PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Jack\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Biology\PYGZsq{}}\PYG{p}{);}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} add this row, parameters should be given in order}
+
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{student} \PYG{p}{(}\PYG{n}{student\PYGZus{}id}\PYG{p}{,} \PYG{n}{name}\PYG{p}{)} \PYG{k}{VALUES} \PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Kate\PYGZsq{}}\PYG{p}{);}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Now we need not include \PYGZsq{}major\PYGZsq{}, it will show \PYGZsq{}NULL\PYGZsq{} in major now.}
+\end{Verbatim}

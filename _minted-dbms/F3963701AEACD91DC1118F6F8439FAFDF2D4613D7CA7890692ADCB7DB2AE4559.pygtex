@@ -1,0 +1,25 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{UPDATE} \PYG{n}{student}
+\PYG{k}{SET} \PYG{n}{major} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}Bio\PYGZsq{}}
+\PYG{k}{WHERE} \PYG{n}{major} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}Biology\PYGZsq{}}\PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} other operators are \PYGZlt{}\PYGZgt{} (not equal), \PYGZgt{} (greater), \PYGZlt{}, \PYGZgt{}=, \PYGZlt{}=. our target is to update the major name to Bio in case the major name is Biology}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Or we could have done WHERE student\PYGZus{}id \PYGZgt{} 3;}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Or SET major = \PYGZsq{}Biochemistry\PYGZsq{}}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} WHERE major = \PYGZsq{}Bio\PYGZsq{} OR major = \PYGZsq{}Chemistry\PYGZsq{};}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} SET name = \PYGZsq{}Tom\PYGZsq{}, major = \PYGZsq{}undecided\PYGZsq{}}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} WHERE student\PYGZus{}id = 1;}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Note: If we remove WHERE then it will affect all of the rows.}
+\PYG{k}{DELETE} \PYG{k}{FROM} \PYG{n}{student} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} if we put semicolon at the end of this statement then it will delete all of the rows in the table}
+\PYG{k}{WHERE} \PYG{n}{name} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}Tom\PYGZsq{}} \PYG{k}{AND} \PYG{n}{major} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}undecided\PYGZsq{}}\PYG{p}{;}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{k}{SELECT} \PYG{n}{name}\PYG{p}{,} \PYG{n}{major}
+\PYG{k}{FROM} \PYG{n}{student}\PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} now we will get only two columns name, major}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}}
+\PYG{k}{SELECT} \PYG{n}{name}\PYG{p}{,} \PYG{n}{major}
+\PYG{k}{FROM} \PYG{n}{student}
+\PYG{k}{ORDER} \PYG{k}{by} \PYG{n}{name} \PYG{k}{DESC}\PYG{p}{;} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} will give the entries in the descending order of names. If we remove DESC then it will be order by ascending order. btw ASC can as well be used instead.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} ORDER by major, student\PYGZus{}id DESC; \PYGZhy{}\PYGZhy{} will order by major and in case there is a tie then they will be ordered by descending student\PYGZus{}id.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} We can add LIMIT 2; this would give us only 2 entries.}
+\PYG{k}{SELECT} \PYG{n}{name}\PYG{p}{,} \PYG{n}{major}
+\PYG{k}{FROM} \PYG{n}{student}
+\PYG{k}{WHERE} \PYG{n}{name} \PYG{k}{IN} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Claire\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Kate\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Mike\PYGZsq{}}\PYG{p}{)} \PYG{k}{AND} \PYG{n}{student\PYGZus{}id} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{2}\PYG{p}{;} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} IN checks for set membership}
+\end{Verbatim}
