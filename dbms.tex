@@ -42,6 +42,10 @@
 \tableofcontents
 \thispagestyle{fancy}  % else it was not giving fancy header to the first page
 \newpage
+\section{Doubts}
+discriminator of weak entity? (or did mam say that she is not going into details of it?)
+
+Slide 15 of lect4.
 \section{Intro}
 Database is simply a collection of related info.
 
@@ -344,14 +348,14 @@ FROM employee;
 
 -- Aggregation.
 -- Find out how many males and females there are
-SELECT COUNT(sex), sex
+SELECT COUNT(sex), sex  -- now we have two columns, viz, COUNT(sex) and sex.
 FROM employee
 GROUP BY sex
 
 -- Find the total sales of each salesman
 SELECT SUM(total_sales), emp_id
 FROM works_with
-GROUP BY client_id;
+GROUP BY emp_id;
 
 -- Find the total amount of money spent by each client
 SELECT SUM(total_sales), client_id
@@ -418,7 +422,7 @@ WHERE employee.emp_id IN (SELECT works_with.emp_id  -- note that first sql will 
                           FROM works_with
                           WHERE works_with.total_sales > 50000);
 
--- Find all clients who are handles by the branch that Michael Scott manages
+-- Find all clients who are handled by the branch that Michael Scott manages
 -- Assume you know Michael's ID
 SELECT client.client_id, client.client_name
 FROM client
@@ -520,12 +524,97 @@ VALUES(111, 'Pam', 'Beesly', '1988-02-19', 'F', 69000, 106, 3);
 
 DROP TRIGGER my_trigger;
 \end{minted}
+Around last 20 mins of that video show how to convert ER Diagram to actual database schema.
+
 Entity = An object we want to model and store information about
+
 Attributes = Specific pieces of information about an entity
+
 Composite attribute = An attribute that can be broken up into sub attributes
+
 Multi - valued attribute = An attribute than can have more than one value (like same student can have more than one club but only one GPA)
+
 Derived Attribute = An attribute that can be derived from the other attributes.
+
 ER = Entity Relationship defines a relationship between two entities.
+
 Relationship Attribute = An attribute about the relationship
 
+\subsection{Lect1}
+Levels of abstraction
+
+Physical level: describes how a record (e.g., instructor) is stored.
+
+Logical level: describes data stored in database, and the relationships among 
+the data.
+
+View level: application programs hide details of data types.  Views can also 
+hide information (such as an employee’s salary) for security purposes. 
+
+Logical Schema: the overall logical structure of the database 
+Example: The database consists of information about a set of customers and 
+accounts in a bank and the relationship between them
+Analogous to type information of a variable in a program
+
+Physical schema: the overall physical structure of the database 
+
+Instance: the actual content of the database at a particular point in time 
+Analogous to the value of a variable
+
+Physical Data Independence: the ability to modify the physical schema without 
+changing the logical schema
+
+Data Models: A collection of tools for describing Data, Data relationships, Data semantics, Data constraints. Ex: Relationship Model, Entity relationship model, object based model.
+
+Database engine: 
+
+1) Storage manager: is a program module that provides the interface between 
+the low-level data stored in the database and the application programs and 
+queries submitted to the system.
+
+2) Query Processing
+
+3) Transaction Management:- 
+
+Transaction: is a collection of operations that performs a single 
+logical function in a database application
+
+Transaction-management component: ensures that the database 
+remains in a consistent (correct) state despite system failures (e.g., 
+power failures and operating system crashes) and transaction failures.
+\subsection{Lect2}
+Lecture was about relational model
+
+K is a superkey of R if values for K are sufficient to identify a unique tuple of each possible relation r of R.
+
+Superkey K is a candidate key if K is minimal
+
+One of the candidate key is selected to be the primary key
+\subsection{Lect3}
+An entity is a “thing” or “object” in the real world that is 
+distinguishable from other objects. 
+
+Entities are described in a database by a set of attributes
+
+A relationship is an association among several entities
+
+The set of all entities of the same type and the set of all relationships of the same type are termed an entity set and relationship set, respectively. 
+
+A relationship may also have attributes called descriptive attributes
+
+Domain: the set of permitted values for each attribute 
+
+An entity set that does not have sufficient attributes to form a primary key is termed a weak entity set
+
+An entity set that has a primary key is termed a strong entity set
+
+For a weak entity set to be meaningful, it must be associated with another entity set, called the identifying or owner entity set
+
+Every weak entity must be associated with an identifying entity; that is, the weak entity set is said to be existence dependent on the  identifying entity set. The identifying entity set is said to  own the  weak entity set that it identifies. 
+
+The relationship associating the weak entity set with the identifying  entity set is called the identifying relationship
+
+The discriminator (or partial key) of a weak entity set is the set of attributes that distinguishes among all the entities of a weak entity set.
+
+The primary key of a weak entity set is formed by the primary key of the strong entity set on which the weak entity set is existence dependent, plus the weak entity set’s discriminator
 \end{document}

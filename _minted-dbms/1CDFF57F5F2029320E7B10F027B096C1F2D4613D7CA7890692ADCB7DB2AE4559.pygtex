@@ -207,14 +207,14 @@
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Aggregation.}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find out how many males and females there are}
-\PYG{k}{SELECT} \PYG{k}{COUNT}\PYG{p}{(}\PYG{n}{sex}\PYG{p}{),} \PYG{n}{sex}
+\PYG{k}{SELECT} \PYG{k}{COUNT}\PYG{p}{(}\PYG{n}{sex}\PYG{p}{),} \PYG{n}{sex}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} now we have two columns, viz, COUNT(sex) and sex.}
 \PYG{k}{FROM} \PYG{n}{employee}
 \PYG{k}{GROUP} \PYG{k}{BY} \PYG{n}{sex}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the total sales of each salesman}
 \PYG{k}{SELECT} \PYG{k}{SUM}\PYG{p}{(}\PYG{n}{total\PYGZus{}sales}\PYG{p}{),} \PYG{n}{emp\PYGZus{}id}
 \PYG{k}{FROM} \PYG{n}{works\PYGZus{}with}
-\PYG{k}{GROUP} \PYG{k}{BY} \PYG{n}{client\PYGZus{}id}\PYG{p}{;}
+\PYG{k}{GROUP} \PYG{k}{BY} \PYG{n}{emp\PYGZus{}id}\PYG{p}{;}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the total amount of money spent by each client}
 \PYG{k}{SELECT} \PYG{k}{SUM}\PYG{p}{(}\PYG{n}{total\PYGZus{}sales}\PYG{p}{),} \PYG{n}{client\PYGZus{}id}
@@ -281,7 +281,7 @@
                           \PYG{k}{FROM} \PYG{n}{works\PYGZus{}with}
                           \PYG{k}{WHERE} \PYG{n}{works\PYGZus{}with}\PYG{p}{.}\PYG{n}{total\PYGZus{}sales} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{50000}\PYG{p}{);}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all clients who are handles by the branch that Michael Scott manages}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all clients who are handled by the branch that Michael Scott manages}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Assume you know Michael\PYGZsq{}s ID}
 \PYG{k}{SELECT} \PYG{n}{client}\PYG{p}{.}\PYG{n}{client\PYGZus{}id}\PYG{p}{,} \PYG{n}{client}\PYG{p}{.}\PYG{n}{client\PYGZus{}name}
 \PYG{k}{FROM} \PYG{n}{client}
