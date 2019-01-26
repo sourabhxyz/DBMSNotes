@@ -46,6 +46,10 @@
 discriminator of weak entity? (or did mam say that she is not going into details of it?)
 
 Slide 15 of lect4.
+
+
+Does count avoid null (to be asked from myself, q: 21 from lab 3.)
+in specialisation shouldnt the top level has certain fixed attributes? (I mean when we merge specialised (low level) to above it gives us certain attributes which doesn't match when merging others). Though it oculd be very well the case that we are getting different tables after merging.
 \section{Intro}
 Database is simply a collection of related info.
 
@@ -80,20 +84,21 @@ Composite Key: Key which requires 2 or more attributes, Primary key can be a com
 
 Foreign Key: Attribute which will link us to another database table. Foreign key stores primary key of a row of another database table. A particular table can have more than one foreign key. And it can have NULL values. Primary key could be a composite of foreign keys.
 
-Code written
+\subsection{SQL}
 \begin{minted}{SQL}
 create database girrafe;
 
 INT -- whole numbers
 DECIMAL(M, N) -- M is the total no. of digits and N is the no. of digits after the decimal point.
-VALCHAR(l) -- String of length l.
+CHAR(l) -- String of fixed length l.
+VARCHAR(l) -- String of maximum length l.
 BLOB -- Binary Large Object
 DATE -- 'YYYY-MM-DD'
 TIMESTAMP -- 'YYYY-MM-DD HH:MM:SS'
 
 
 CREATE TABLE student (
-    student_id INT PRIMARY KEY,
+    student_id INT PRIMARY KEY,  -- now automatically student_id can't be null.
     name VARCHAR (30),
     major VARCHAR (20)
 );
@@ -102,12 +107,18 @@ DESCRIBE student;  -- Describes our table
 
 DROP TABLE student;  -- Deletes our table
 
-ALTER TABLE student ADD gpa DECIMAL (3, 2);  -- Add a column to our table
+ALTER TABLE student ADD gpa DECIMAL (3, 2) default 0;  -- Add a column to our table
+
+alter table student add gender enum ('M', 'F') not null;  -- will give some default value (like 'M') to already existing rows
+
+-- aliter
+alter table student add gender varchar (1) check (gender in ('M', 'F')) not null
 
 ALTER TABLE student DROP COLUMN gpa;  -- drops our gpa column
 
 SELECT * FROM student;  -- show all rows
 
+SELECT '123'; -- will create at table with only one column '123', and only one entry '123'.
 
 INSERT INTO student VALUES (1, 'Jack', 'Biology');  -- add this row, parameters should be given in order
 
@@ -127,13 +138,21 @@ DELETE FROM student -- if we put semicolon at the end of this statement then it 
 WHERE name = 'Tom' AND major = 'undecided';
 ------------------
 SELECT name, major
-FROM student;  -- now we will get only two columns name, major
---
-SELECT name, major
 FROM student
 ORDER by name DESC; -- will give the entries in the descending order of names. If we remove DESC then it will be order by ascending order. btw ASC can as well be used instead.
 -- ORDER by major, student_id DESC; -- will order by major and in case there is a tie then they will be ordered by descending student_id.
 -- We can add LIMIT 2; this would give us only 2 entries.
+-- We can do LIMIT 2 OFFSET 5; which will give entry 6, 7.
+-- select * from takes order by field (grade, 'S', 'A+', 'A', 'A-', ..., 'D-'); to order with specified order.
+-- aliter is given below, suppose the order is 2, 1, 3.
+select * from people, 
+where id in (1, 2, 3)
+order by case id
+when 2 then 0
+when 1 then 1
+when 3 then 2
+else 3 then END;
+
 SELECT name, major
 FROM student
 WHERE name IN ('Claire', 'Kate', 'Mike') AND student_id > 2; -- IN checks for set membership
@@ -157,6 +176,9 @@ CREATE TABLE branch (
   mgr_id INT,
   mgr_start_date DATE,
   FOREIGN KEY(mgr_id) REFERENCES employee(emp_id) ON DELETE SET NULL
+  -- example of multiple foreign key:
+  -- foreign key (course_id, sec_id, semester) references section (course_id, sec_id, semester) on delete cascade
+  -- foreign key (ID) references student (ID) on delete cascade
 );
 
 ALTER TABLE employee
@@ -180,7 +202,7 @@ CREATE TABLE works_with (
   emp_id INT,
   client_id INT,
   total_sales INT,
-  PRIMARY KEY(emp_id, client_id),
+  PRIMARY KEY(emp_id, client_id),  -- in this way we can set multiple primary keys.
   FOREIGN KEY(emp_id) REFERENCES employee(emp_id) ON DELETE CASCADE,
   FOREIGN KEY(client_id) REFERENCES client(client_id) ON DELETE CASCADE
 );
@@ -262,75 +284,19 @@ INSERT INTO works_with VALUES(107, 405, 26000);
 INSERT INTO works_with VALUES(102, 406, 15000);
 INSERT INTO works_with VALUES(105, 406, 130000);
 
--- Find all employees
-SELECT *
-FROM employee;
-
--- Find all clients
-SELECT *
-FROM clients;
-
--- Find all employees ordered by salary
-SELECT *
-from employee
-ORDER BY salary ASC/DESC;
-
--- Find all employees ordered by sex then name
-SELECT *
-from employee
-ORDER BY sex, name;
-
--- Find the first 5 employees in the table
-SELECT *
-from employee
-LIMIT 5;
-
--- Find the first and last names of all employees
-SELECT first_name, employee.last_name
-FROM employee;
-
--- Find the forename and surnames names of all employees
-SELECT first_name AS forename, employee.last_name AS surname
-FROM employee;
-
 -- Find out all the different genders
 SELECT DISCINCT sex
 FROM employee;
-
--- Find all male employees
-SELECT *
-FROM employee
-WHERE sex = 'M';
-
--- Find all employees at branch 2
-SELECT *
-FROM employee
-WHERE branch_id = 2;
 
 -- Find all employee's id's and names who were born after 1969
 SELECT emp_id, first_name, last_name
 FROM employee
 WHERE birth_day >= 1970-01-01;
 
--- Find all female employees at branch 2
-SELECT *
-FROM employee
-WHERE branch_id = 2 AND sex = 'F';
-
--- Find all employees who are female & born after 1969 or who make over 80000
-SELECT *
-FROM employee
-WHERE (birth_day >= '1970-01-01' AND sex = 'F') OR salary > 80000;
-
 -- Find all employees born between 1970 and 1975
 SELECT *
 FROM employee
 WHERE birth_day BETWEEN '1970-01-01' AND '1975-01-01';
-
--- Find all employees named Jim, Michael, Johnny or David
-SELECT *
-FROM employee
-WHERE first_name IN ('Jim', 'Michael', 'Johnny', 'David');
 
 -- Functions
 
@@ -356,25 +322,23 @@ GROUP BY sex
 SELECT SUM(total_sales), emp_id
 FROM works_with
 GROUP BY emp_id;
+-- IMP NOTE: sum does not avoid null values, null + something is always null so better check for null values.
+select sum(tot_cred) from student where tot_cred is not null;
 
 -- Find the total amount of money spent by each client
 SELECT SUM(total_sales), client_id
 FROM works_with
 GROUP BY client_id;
 
+select dept_name from department, (select max(budget) as MX from department) as T where budget = T.MX;
+
+select dept_name, max(AG) from (select dept_name, avg(salary) as AG from instructor group by dept_name) as M;
+
+select name, salary, dept_name from instructor where salary > all (select salary from instructor where dept_name in ('Biology', 'History', 'Finance'));
+
 -- Wildcards
 
 -- % = any # characters, _ = one character
-
--- Find any client's who are an LLC
-SELECT *
-FROM client
-WHERE client_name LIKE '%LLC';
-
--- Find any branch suppliers who are in the label business
-SELECT *
-FROM branch_supplier
-WHERE supplier_name LIKE '% Label%';
 
 -- Find any employee born on the 10th day of the month
 SELECT *
@@ -388,13 +352,6 @@ WHERE client_name LIKE '%Highschool%';
 
 -- Union
 
--- Find a list of employee and branch names
-SELECT employee.first_name AS Employee_Branch_Names
-FROM employee
-UNION
-SELECT branch.branch_name
-FROM branch;
-
 -- Find a list of all clients & branch suppliers' names
 SELECT client.client_name AS Non-Employee_Entities, client.branch_id AS Branch_ID
 FROM client
@@ -405,13 +362,17 @@ FROM branch_supplier;
 -- JOINS (used to combine rows from two or more tables based on the related columns)
 
 -- Add the extra branch
-INSERT INTO branch VALUES(4, "Buffalo", NULL, NULL);
+INSERT INTO branch VALUES(4, "Buffalo", NULL, NULL);  -- here I have used double quotes but strings can as well be represented with single quotes.
 
 -- Find all branches and the names of their managers
 SELECT employee.emp_id, employee.first_name, branch.branch_name
 FROM employee
 JOIN branch    -- LEFT JOIN (when we use LEFT JOIN all the rows from the left table gets included as well, similarly for RIGHT JOIN), RIGHT JOIN  (we added buffalo just so that we can see difference in case of RIGHT JOIN)
 ON employee.emp_id = branch.mgr_id;
+-- we can add a where clause beneath this like where branch.mgr_start_date > something
+
+-- Show ID, name, courses, and corresponding credits of each student.
+select M.ID, M.name, C.title, C.credits from (select S.ID, S.name, T.course_id from student as S join takes as T on S.ID = T.ID) as M join course as C on M.course_id = C.course_id;
 
 -- nested queries
 
@@ -463,10 +424,23 @@ WHERE client.client_id IN (
                           WHERE totals > 100000
 );
 
+-- Correct the tot_credit attributes for each tuple in student table such that total credit is
+equal to the credit of courses successfully completed by the student. Here successfully
+completed means student has a grade that is not ‘F’ . Students who did not take any
+courses, the output for them should show total credit 0.
+
+update student as ST, (select B.ID, coalesce(B.crd, 0) as cred from (select J.ID, sum(C.credits) as crd from (select N.ID, N.grd, N.course_id from (select M.ID, coalesce(M.grade, 'N') as grd, M.course_id from (select S.ID, S.name, T.course_id, T.grade from student as S left join takes as T on S.ID = T.ID) as M) as N) as J left join course as C on J.course_id = C.course_id where J.grd <> 'F' group by J.ID) as B) as TEMP set tot_cred = TEMP.cred where ST.ID = TEMP.ID;
+
 -- deleting entries in the table when they have foreign keys associated to them
 -- ON DELETE NULL means that say if we delete Michael Scott then second entry in the branch table will get mgr_id set to NULL whereas in ON DELETE CASCADE the entire row will get deleted in branch table. Use ON DELETE CASCADE when that foreign key is very important like say it forms a primary key.
 
+-- Views
 
+-- Create view of students who are studying in a department with budget more than 80000
+
+create view stud_dept_budg as select S.ID, S.name, S.dept_name, D.budget from student as S join department as D on S.dept_name = D.dept_name where D.budget > 80000;
+
+-- Now if we delete (or dec budget) some department with budget > 80000. and then do select * from stud_dept_budg; it wont show name corresponding to that department.
 -- CREATE
 --     TRIGGER `event_name` BEFORE/AFTER INSERT/UPDATE/DELETE
 --     ON `database`.`table`
@@ -617,4 +591,8 @@ The relationship associating the weak entity set with the identifying  entity se
 The discriminator (or partial key) of a weak entity set is the set of attributes that distinguishes among all the entities of a weak entity set.
 
 The primary key of a weak entity set is formed by the primary key of the strong entity set on which the weak entity set is existence dependent, plus the weak entity set’s discriminator
+\subsection{Lect4-5}
+See slides.
+\subsection{Lect6}
+See slides.
 \end{document}

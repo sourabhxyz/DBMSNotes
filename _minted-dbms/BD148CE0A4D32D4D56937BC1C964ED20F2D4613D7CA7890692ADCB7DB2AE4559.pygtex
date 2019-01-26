@@ -3,14 +3,15 @@
 
 \PYG{n+nb}{INT} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} whole numbers}
 \PYG{n+nb}{DECIMAL}\PYG{p}{(}\PYG{n}{M}\PYG{p}{,} \PYG{n}{N}\PYG{p}{)} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} M is the total no. of digits and N is the no. of digits after the decimal point.}
-\PYG{n}{VALCHAR}\PYG{p}{(}\PYG{n}{l}\PYG{p}{)} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} String of length l.}
+\PYG{n+nb}{CHAR}\PYG{p}{(}\PYG{n}{l}\PYG{p}{)} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} String of fixed length l.}
+\PYG{n+nb}{VARCHAR}\PYG{p}{(}\PYG{n}{l}\PYG{p}{)} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} String of maximum length l.}
 \PYG{n+nb}{BLOB} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Binary Large Object}
 \PYG{n+nb}{DATE} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} \PYGZsq{}YYYY\PYGZhy{}MM\PYGZhy{}DD\PYGZsq{}}
 \PYG{k}{TIMESTAMP} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} \PYGZsq{}YYYY\PYGZhy{}MM\PYGZhy{}DD HH:MM:SS\PYGZsq{}}
 
 
 \PYG{k}{CREATE} \PYG{k}{TABLE} \PYG{n}{student} \PYG{p}{(}
-    \PYG{n}{student\PYGZus{}id} \PYG{n+nb}{INT} \PYG{k}{PRIMARY} \PYG{k}{KEY}\PYG{p}{,}
+    \PYG{n}{student\PYGZus{}id} \PYG{n+nb}{INT} \PYG{k}{PRIMARY} \PYG{k}{KEY}\PYG{p}{,}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} now automatically student\PYGZus{}id can\PYGZsq{}t be null.}
     \PYG{n}{name} \PYG{n+nb}{VARCHAR} \PYG{p}{(}\PYG{l+m+mi}{30}\PYG{p}{),}
     \PYG{n}{major} \PYG{n+nb}{VARCHAR} \PYG{p}{(}\PYG{l+m+mi}{20}\PYG{p}{)}
 \PYG{p}{);}
@@ -19,12 +20,18 @@
 
 \PYG{k}{DROP} \PYG{k}{TABLE} \PYG{n}{student}\PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Deletes our table}
 
-\PYG{k}{ALTER} \PYG{k}{TABLE} \PYG{n}{student} \PYG{k}{ADD} \PYG{n}{gpa} \PYG{n+nb}{DECIMAL} \PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{);}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Add a column to our table}
+\PYG{k}{ALTER} \PYG{k}{TABLE} \PYG{n}{student} \PYG{k}{ADD} \PYG{n}{gpa} \PYG{n+nb}{DECIMAL} \PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{)} \PYG{k}{default} \PYG{l+m+mi}{0}\PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Add a column to our table}
+
+\PYG{k}{alter} \PYG{k}{table} \PYG{n}{student} \PYG{k}{add} \PYG{n}{gender} \PYG{n}{enum} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}}\PYG{p}{)} \PYG{k}{not} \PYG{k}{null}\PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} will give some default value (like \PYGZsq{}M\PYGZsq{}) to already existing rows}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} aliter}
+\PYG{k}{alter} \PYG{k}{table} \PYG{n}{student} \PYG{k}{add} \PYG{n}{gender} \PYG{n+nb}{varchar} \PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)} \PYG{k}{check} \PYG{p}{(}\PYG{n}{gender} \PYG{k}{in} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}}\PYG{p}{))} \PYG{k}{not} \PYG{k}{null}
 
 \PYG{k}{ALTER} \PYG{k}{TABLE} \PYG{n}{student} \PYG{k}{DROP} \PYG{k}{COLUMN} \PYG{n}{gpa}\PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} drops our gpa column}
 
 \PYG{k}{SELECT} \PYG{o}{*} \PYG{k}{FROM} \PYG{n}{student}\PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} show all rows}
 
+\PYG{k}{SELECT} \PYG{l+s+s1}{\PYGZsq{}123\PYGZsq{}}\PYG{p}{;} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} will create at table with only one column \PYGZsq{}123\PYGZsq{}, and only one entry \PYGZsq{}123\PYGZsq{}.}
 
 \PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{student} \PYG{k}{VALUES} \PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Jack\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Biology\PYGZsq{}}\PYG{p}{);}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} add this row, parameters should be given in order}
 

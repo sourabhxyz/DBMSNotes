@@ -16,6 +16,9 @@
   \PYG{n}{mgr\PYGZus{}id} \PYG{n+nb}{INT}\PYG{p}{,}
   \PYG{n}{mgr\PYGZus{}start\PYGZus{}date} \PYG{n+nb}{DATE}\PYG{p}{,}
   \PYG{k}{FOREIGN} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{mgr\PYGZus{}id}\PYG{p}{)} \PYG{k}{REFERENCES} \PYG{n}{employee}\PYG{p}{(}\PYG{n}{emp\PYGZus{}id}\PYG{p}{)} \PYG{k}{ON} \PYG{k}{DELETE} \PYG{k}{SET} \PYG{k}{NULL}
+  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} example of multiple foreign key:}
+  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} foreign key (course\PYGZus{}id, sec\PYGZus{}id, semester) references section (course\PYGZus{}id, sec\PYGZus{}id, semester) on delete cascade}
+  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} foreign key (ID) references student (ID) on delete cascade}
 \PYG{p}{);}
 
 \PYG{k}{ALTER} \PYG{k}{TABLE} \PYG{n}{employee}
@@ -39,7 +42,7 @@
   \PYG{n}{emp\PYGZus{}id} \PYG{n+nb}{INT}\PYG{p}{,}
   \PYG{n}{client\PYGZus{}id} \PYG{n+nb}{INT}\PYG{p}{,}
   \PYG{n}{total\PYGZus{}sales} \PYG{n+nb}{INT}\PYG{p}{,}
-  \PYG{k}{PRIMARY} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{emp\PYGZus{}id}\PYG{p}{,} \PYG{n}{client\PYGZus{}id}\PYG{p}{),}
+  \PYG{k}{PRIMARY} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{emp\PYGZus{}id}\PYG{p}{,} \PYG{n}{client\PYGZus{}id}\PYG{p}{),}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} in this way we can set multiple primary keys.}
   \PYG{k}{FOREIGN} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{emp\PYGZus{}id}\PYG{p}{)} \PYG{k}{REFERENCES} \PYG{n}{employee}\PYG{p}{(}\PYG{n}{emp\PYGZus{}id}\PYG{p}{)} \PYG{k}{ON} \PYG{k}{DELETE} \PYG{k}{CASCADE}\PYG{p}{,}
   \PYG{k}{FOREIGN} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{client\PYGZus{}id}\PYG{p}{)} \PYG{k}{REFERENCES} \PYG{n}{client}\PYG{p}{(}\PYG{n}{client\PYGZus{}id}\PYG{p}{)} \PYG{k}{ON} \PYG{k}{DELETE} \PYG{k}{CASCADE}
 \PYG{p}{);}
@@ -121,75 +124,19 @@
 \PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{102}\PYG{p}{,} \PYG{l+m+mi}{406}\PYG{p}{,} \PYG{l+m+mi}{15000}\PYG{p}{);}
 \PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{105}\PYG{p}{,} \PYG{l+m+mi}{406}\PYG{p}{,} \PYG{l+m+mi}{130000}\PYG{p}{);}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all employees}
-\PYG{k}{SELECT} \PYG{o}{*}
-\PYG{k}{FROM} \PYG{n}{employee}\PYG{p}{;}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all clients}
-\PYG{k}{SELECT} \PYG{o}{*}
-\PYG{k}{FROM} \PYG{n}{clients}\PYG{p}{;}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all employees ordered by salary}
-\PYG{k}{SELECT} \PYG{o}{*}
-\PYG{k}{from} \PYG{n}{employee}
-\PYG{k}{ORDER} \PYG{k}{BY} \PYG{n}{salary} \PYG{k}{ASC}\PYG{o}{/}\PYG{k}{DESC}\PYG{p}{;}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all employees ordered by sex then name}
-\PYG{k}{SELECT} \PYG{o}{*}
-\PYG{k}{from} \PYG{n}{employee}
-\PYG{k}{ORDER} \PYG{k}{BY} \PYG{n}{sex}\PYG{p}{,} \PYG{n}{name}\PYG{p}{;}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the first 5 employees in the table}
-\PYG{k}{SELECT} \PYG{o}{*}
-\PYG{k}{from} \PYG{n}{employee}
-\PYG{k}{LIMIT} \PYG{l+m+mi}{5}\PYG{p}{;}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the first and last names of all employees}
-\PYG{k}{SELECT} \PYG{n}{first\PYGZus{}name}\PYG{p}{,} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{last\PYGZus{}name}
-\PYG{k}{FROM} \PYG{n}{employee}\PYG{p}{;}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the forename and surnames names of all employees}
-\PYG{k}{SELECT} \PYG{n}{first\PYGZus{}name} \PYG{k}{AS} \PYG{n}{forename}\PYG{p}{,} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{last\PYGZus{}name} \PYG{k}{AS} \PYG{n}{surname}
-\PYG{k}{FROM} \PYG{n}{employee}\PYG{p}{;}
-
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find out all the different genders}
 \PYG{k}{SELECT} \PYG{n}{DISCINCT} \PYG{n}{sex}
 \PYG{k}{FROM} \PYG{n}{employee}\PYG{p}{;}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all male employees}
-\PYG{k}{SELECT} \PYG{o}{*}
-\PYG{k}{FROM} \PYG{n}{employee}
-\PYG{k}{WHERE} \PYG{n}{sex} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{;}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all employees at branch 2}
-\PYG{k}{SELECT} \PYG{o}{*}
-\PYG{k}{FROM} \PYG{n}{employee}
-\PYG{k}{WHERE} \PYG{n}{branch\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{2}\PYG{p}{;}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all employee\PYGZsq{}s id\PYGZsq{}s and names who were born after 1969}
 \PYG{k}{SELECT} \PYG{n}{emp\PYGZus{}id}\PYG{p}{,} \PYG{n}{first\PYGZus{}name}\PYG{p}{,} \PYG{n}{last\PYGZus{}name}
 \PYG{k}{FROM} \PYG{n}{employee}
 \PYG{k}{WHERE} \PYG{n}{birth\PYGZus{}day} \PYG{o}{\PYGZgt{}=} \PYG{l+m+mi}{1970}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{01}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{01}\PYG{p}{;}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all female employees at branch 2}
-\PYG{k}{SELECT} \PYG{o}{*}
-\PYG{k}{FROM} \PYG{n}{employee}
-\PYG{k}{WHERE} \PYG{n}{branch\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{2} \PYG{k}{AND} \PYG{n}{sex} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}}\PYG{p}{;}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all employees who are female \PYGZam{} born after 1969 or who make over 80000}
-\PYG{k}{SELECT} \PYG{o}{*}
-\PYG{k}{FROM} \PYG{n}{employee}
-\PYG{k}{WHERE} \PYG{p}{(}\PYG{n}{birth\PYGZus{}day} \PYG{o}{\PYGZgt{}=} \PYG{l+s+s1}{\PYGZsq{}1970\PYGZhy{}01\PYGZhy{}01\PYGZsq{}} \PYG{k}{AND} \PYG{n}{sex} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}}\PYG{p}{)} \PYG{k}{OR} \PYG{n}{salary} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{80000}\PYG{p}{;}
-
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all employees born between 1970 and 1975}
 \PYG{k}{SELECT} \PYG{o}{*}
 \PYG{k}{FROM} \PYG{n}{employee}
 \PYG{k}{WHERE} \PYG{n}{birth\PYGZus{}day} \PYG{k}{BETWEEN} \PYG{l+s+s1}{\PYGZsq{}1970\PYGZhy{}01\PYGZhy{}01\PYGZsq{}} \PYG{k}{AND} \PYG{l+s+s1}{\PYGZsq{}1975\PYGZhy{}01\PYGZhy{}01\PYGZsq{}}\PYG{p}{;}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all employees named Jim, Michael, Johnny or David}
-\PYG{k}{SELECT} \PYG{o}{*}
-\PYG{k}{FROM} \PYG{n}{employee}
-\PYG{k}{WHERE} \PYG{n}{first\PYGZus{}name} \PYG{k}{IN} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Jim\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Michael\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Johnny\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}David\PYGZsq{}}\PYG{p}{);}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Functions}
 
@@ -215,25 +162,23 @@
 \PYG{k}{SELECT} \PYG{k}{SUM}\PYG{p}{(}\PYG{n}{total\PYGZus{}sales}\PYG{p}{),} \PYG{n}{emp\PYGZus{}id}
 \PYG{k}{FROM} \PYG{n}{works\PYGZus{}with}
 \PYG{k}{GROUP} \PYG{k}{BY} \PYG{n}{emp\PYGZus{}id}\PYG{p}{;}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} IMP NOTE: sum does not avoid null values, null + something is always null so better check for null values.}
+\PYG{k}{select} \PYG{k}{sum}\PYG{p}{(}\PYG{n}{tot\PYGZus{}cred}\PYG{p}{)} \PYG{k}{from} \PYG{n}{student} \PYG{k}{where} \PYG{n}{tot\PYGZus{}cred} \PYG{k}{is} \PYG{k}{not} \PYG{k}{null}\PYG{p}{;}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the total amount of money spent by each client}
 \PYG{k}{SELECT} \PYG{k}{SUM}\PYG{p}{(}\PYG{n}{total\PYGZus{}sales}\PYG{p}{),} \PYG{n}{client\PYGZus{}id}
 \PYG{k}{FROM} \PYG{n}{works\PYGZus{}with}
 \PYG{k}{GROUP} \PYG{k}{BY} \PYG{n}{client\PYGZus{}id}\PYG{p}{;}
 
+\PYG{k}{select} \PYG{n}{dept\PYGZus{}name} \PYG{k}{from} \PYG{n}{department}\PYG{p}{,} \PYG{p}{(}\PYG{k}{select} \PYG{k}{max}\PYG{p}{(}\PYG{n}{budget}\PYG{p}{)} \PYG{k}{as} \PYG{n}{MX} \PYG{k}{from} \PYG{n}{department}\PYG{p}{)} \PYG{k}{as} \PYG{n}{T} \PYG{k}{where} \PYG{n}{budget} \PYG{o}{=} \PYG{n}{T}\PYG{p}{.}\PYG{n}{MX}\PYG{p}{;}
+
+\PYG{k}{select} \PYG{n}{dept\PYGZus{}name}\PYG{p}{,} \PYG{k}{max}\PYG{p}{(}\PYG{n}{AG}\PYG{p}{)} \PYG{k}{from} \PYG{p}{(}\PYG{k}{select} \PYG{n}{dept\PYGZus{}name}\PYG{p}{,} \PYG{k}{avg}\PYG{p}{(}\PYG{n}{salary}\PYG{p}{)} \PYG{k}{as} \PYG{n}{AG} \PYG{k}{from} \PYG{n}{instructor} \PYG{k}{group} \PYG{k}{by} \PYG{n}{dept\PYGZus{}name}\PYG{p}{)} \PYG{k}{as} \PYG{n}{M}\PYG{p}{;}
+
+\PYG{k}{select} \PYG{n}{name}\PYG{p}{,} \PYG{n}{salary}\PYG{p}{,} \PYG{n}{dept\PYGZus{}name} \PYG{k}{from} \PYG{n}{instructor} \PYG{k}{where} \PYG{n}{salary} \PYG{o}{\PYGZgt{}} \PYG{k}{all} \PYG{p}{(}\PYG{k}{select} \PYG{n}{salary} \PYG{k}{from} \PYG{n}{instructor} \PYG{k}{where} \PYG{n}{dept\PYGZus{}name} \PYG{k}{in} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Biology\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}History\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Finance\PYGZsq{}}\PYG{p}{));}
+
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Wildcards}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} \PYGZpc{} = any \PYGZsh{} characters, \PYGZus{} = one character}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find any client\PYGZsq{}s who are an LLC}
-\PYG{k}{SELECT} \PYG{o}{*}
-\PYG{k}{FROM} \PYG{n}{client}
-\PYG{k}{WHERE} \PYG{n}{client\PYGZus{}name} \PYG{k}{LIKE} \PYG{l+s+s1}{\PYGZsq{}\PYGZpc{}LLC\PYGZsq{}}\PYG{p}{;}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find any branch suppliers who are in the label business}
-\PYG{k}{SELECT} \PYG{o}{*}
-\PYG{k}{FROM} \PYG{n}{branch\PYGZus{}supplier}
-\PYG{k}{WHERE} \PYG{n}{supplier\PYGZus{}name} \PYG{k}{LIKE} \PYG{l+s+s1}{\PYGZsq{}\PYGZpc{} Label\PYGZpc{}\PYGZsq{}}\PYG{p}{;}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find any employee born on the 10th day of the month}
 \PYG{k}{SELECT} \PYG{o}{*}
@@ -247,13 +192,6 @@
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Union}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find a list of employee and branch names}
-\PYG{k}{SELECT} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{first\PYGZus{}name} \PYG{k}{AS} \PYG{n}{Employee\PYGZus{}Branch\PYGZus{}Names}
-\PYG{k}{FROM} \PYG{n}{employee}
-\PYG{k}{UNION}
-\PYG{k}{SELECT} \PYG{n}{branch}\PYG{p}{.}\PYG{n}{branch\PYGZus{}name}
-\PYG{k}{FROM} \PYG{n}{branch}\PYG{p}{;}
-
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find a list of all clients \PYGZam{} branch suppliers\PYGZsq{} names}
 \PYG{k}{SELECT} \PYG{n}{client}\PYG{p}{.}\PYG{n}{client\PYGZus{}name} \PYG{k}{AS} \PYG{n}{Non}\PYG{o}{\PYGZhy{}}\PYG{n}{Employee\PYGZus{}Entities}\PYG{p}{,} \PYG{n}{client}\PYG{p}{.}\PYG{n}{branch\PYGZus{}id} \PYG{k}{AS} \PYG{n}{Branch\PYGZus{}ID}
 \PYG{k}{FROM} \PYG{n}{client}
@@ -264,13 +202,17 @@
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} JOINS (used to combine rows from two or more tables based on the related columns)}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Add the extra branch}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+s+ss}{\PYGZdq{}Buffalo\PYGZdq{}}\PYG{p}{,} \PYG{k}{NULL}\PYG{p}{,} \PYG{k}{NULL}\PYG{p}{);}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+s+ss}{\PYGZdq{}Buffalo\PYGZdq{}}\PYG{p}{,} \PYG{k}{NULL}\PYG{p}{,} \PYG{k}{NULL}\PYG{p}{);}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} here I have used double quotes but strings can as well be represented with single quotes.}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all branches and the names of their managers}
 \PYG{k}{SELECT} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{emp\PYGZus{}id}\PYG{p}{,} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{first\PYGZus{}name}\PYG{p}{,} \PYG{n}{branch}\PYG{p}{.}\PYG{n}{branch\PYGZus{}name}
 \PYG{k}{FROM} \PYG{n}{employee}
 \PYG{k}{JOIN} \PYG{n}{branch}    \PYG{c+c1}{\PYGZhy{}\PYGZhy{} LEFT JOIN (when we use LEFT JOIN all the rows from the left table gets included as well, similarly for RIGHT JOIN), RIGHT JOIN  (we added buffalo just so that we can see difference in case of RIGHT JOIN)}
 \PYG{k}{ON} \PYG{n}{employee}\PYG{p}{.}\PYG{n}{emp\PYGZus{}id} \PYG{o}{=} \PYG{n}{branch}\PYG{p}{.}\PYG{n}{mgr\PYGZus{}id}\PYG{p}{;}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} we can add a where clause beneath this like where branch.mgr\PYGZus{}start\PYGZus{}date \PYGZgt{} something}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Show ID, name, courses, and corresponding credits of each student.}
+\PYG{k}{select} \PYG{n}{M}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{,} \PYG{n}{M}\PYG{p}{.}\PYG{n}{name}\PYG{p}{,} \PYG{k}{C}\PYG{p}{.}\PYG{n}{title}\PYG{p}{,} \PYG{k}{C}\PYG{p}{.}\PYG{n}{credits} \PYG{k}{from} \PYG{p}{(}\PYG{k}{select} \PYG{n}{S}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{,} \PYG{n}{S}\PYG{p}{.}\PYG{n}{name}\PYG{p}{,} \PYG{n}{T}\PYG{p}{.}\PYG{n}{course\PYGZus{}id} \PYG{k}{from} \PYG{n}{student} \PYG{k}{as} \PYG{n}{S} \PYG{k}{join} \PYG{n}{takes} \PYG{k}{as} \PYG{n}{T} \PYG{k}{on} \PYG{n}{S}\PYG{p}{.}\PYG{n}{ID} \PYG{o}{=} \PYG{n}{T}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{)} \PYG{k}{as} \PYG{n}{M} \PYG{k}{join} \PYG{n}{course} \PYG{k}{as} \PYG{k}{C} \PYG{k}{on} \PYG{n}{M}\PYG{p}{.}\PYG{n}{course\PYGZus{}id} \PYG{o}{=} \PYG{k}{C}\PYG{p}{.}\PYG{n}{course\PYGZus{}id}\PYG{p}{;}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} nested queries}
 
@@ -322,10 +264,23 @@
                           \PYG{k}{WHERE} \PYG{n}{totals} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{100000}
 \PYG{p}{);}
 
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Correct the tot\PYGZus{}credit attributes for each tuple in student table such that total credit is}
+\PYG{n}{equal} \PYG{k}{to} \PYG{n}{the} \PYG{n}{credit} \PYG{k}{of} \PYG{n}{courses} \PYG{n}{successfully} \PYG{n}{completed} \PYG{k}{by} \PYG{n}{the} \PYG{n}{student}\PYG{p}{.} \PYG{n}{Here} \PYG{n}{successfully}
+\PYG{n}{completed} \PYG{n}{means} \PYG{n}{student} \PYG{n}{has} \PYG{n}{a} \PYG{n}{grade} \PYG{n}{that} \PYG{k}{is} \PYG{k}{not} \PYG{err}{‘}\PYG{n}{F}\PYG{err}{’} \PYG{p}{.} \PYG{n}{Students} \PYG{n}{who} \PYG{n}{did} \PYG{k}{not} \PYG{n}{take} \PYG{k}{any}
+\PYG{n}{courses}\PYG{p}{,} \PYG{n}{the} \PYG{k}{output} \PYG{k}{for} \PYG{n}{them} \PYG{n}{should} \PYG{k}{show} \PYG{n}{total} \PYG{n}{credit} \PYG{l+m+mi}{0}\PYG{p}{.}
+
+\PYG{k}{update} \PYG{n}{student} \PYG{k}{as} \PYG{n}{ST}\PYG{p}{,} \PYG{p}{(}\PYG{k}{select} \PYG{n}{B}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{,} \PYG{n}{coalesce}\PYG{p}{(}\PYG{n}{B}\PYG{p}{.}\PYG{n}{crd}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{k}{as} \PYG{n}{cred} \PYG{k}{from} \PYG{p}{(}\PYG{k}{select} \PYG{n}{J}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{,} \PYG{k}{sum}\PYG{p}{(}\PYG{k}{C}\PYG{p}{.}\PYG{n}{credits}\PYG{p}{)} \PYG{k}{as} \PYG{n}{crd} \PYG{k}{from} \PYG{p}{(}\PYG{k}{select} \PYG{n}{N}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{,} \PYG{n}{N}\PYG{p}{.}\PYG{n}{grd}\PYG{p}{,} \PYG{n}{N}\PYG{p}{.}\PYG{n}{course\PYGZus{}id} \PYG{k}{from} \PYG{p}{(}\PYG{k}{select} \PYG{n}{M}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{,} \PYG{n}{coalesce}\PYG{p}{(}\PYG{n}{M}\PYG{p}{.}\PYG{n}{grade}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}N\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{grd}\PYG{p}{,} \PYG{n}{M}\PYG{p}{.}\PYG{n}{course\PYGZus{}id} \PYG{k}{from} \PYG{p}{(}\PYG{k}{select} \PYG{n}{S}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{,} \PYG{n}{S}\PYG{p}{.}\PYG{n}{name}\PYG{p}{,} \PYG{n}{T}\PYG{p}{.}\PYG{n}{course\PYGZus{}id}\PYG{p}{,} \PYG{n}{T}\PYG{p}{.}\PYG{n}{grade} \PYG{k}{from} \PYG{n}{student} \PYG{k}{as} \PYG{n}{S} \PYG{k}{left} \PYG{k}{join} \PYG{n}{takes} \PYG{k}{as} \PYG{n}{T} \PYG{k}{on} \PYG{n}{S}\PYG{p}{.}\PYG{n}{ID} \PYG{o}{=} \PYG{n}{T}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{)} \PYG{k}{as} \PYG{n}{M}\PYG{p}{)} \PYG{k}{as} \PYG{n}{N}\PYG{p}{)} \PYG{k}{as} \PYG{n}{J} \PYG{k}{left} \PYG{k}{join} \PYG{n}{course} \PYG{k}{as} \PYG{k}{C} \PYG{k}{on} \PYG{n}{J}\PYG{p}{.}\PYG{n}{course\PYGZus{}id} \PYG{o}{=} \PYG{k}{C}\PYG{p}{.}\PYG{n}{course\PYGZus{}id} \PYG{k}{where} \PYG{n}{J}\PYG{p}{.}\PYG{n}{grd} \PYG{o}{\PYGZlt{}\PYGZgt{}} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}} \PYG{k}{group} \PYG{k}{by} \PYG{n}{J}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{)} \PYG{k}{as} \PYG{n}{B}\PYG{p}{)} \PYG{k}{as} \PYG{n}{TEMP} \PYG{k}{set} \PYG{n}{tot\PYGZus{}cred} \PYG{o}{=} \PYG{n}{TEMP}\PYG{p}{.}\PYG{n}{cred} \PYG{k}{where} \PYG{n}{ST}\PYG{p}{.}\PYG{n}{ID} \PYG{o}{=} \PYG{n}{TEMP}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{;}
+
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} deleting entries in the table when they have foreign keys associated to them}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} ON DELETE NULL means that say if we delete Michael Scott then second entry in the branch table will get mgr\PYGZus{}id set to NULL whereas in ON DELETE CASCADE the entire row will get deleted in branch table. Use ON DELETE CASCADE when that foreign key is very important like say it forms a primary key.}
 
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Views}
 
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Create view of students who are studying in a department with budget more than 80000}
+
+\PYG{k}{create} \PYG{k}{view} \PYG{n}{stud\PYGZus{}dept\PYGZus{}budg} \PYG{k}{as} \PYG{k}{select} \PYG{n}{S}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{,} \PYG{n}{S}\PYG{p}{.}\PYG{n}{name}\PYG{p}{,} \PYG{n}{S}\PYG{p}{.}\PYG{n}{dept\PYGZus{}name}\PYG{p}{,} \PYG{n}{D}\PYG{p}{.}\PYG{n}{budget} \PYG{k}{from} \PYG{n}{student} \PYG{k}{as} \PYG{n}{S} \PYG{k}{join} \PYG{n}{department} \PYG{k}{as} \PYG{n}{D} \PYG{k}{on} \PYG{n}{S}\PYG{p}{.}\PYG{n}{dept\PYGZus{}name} \PYG{o}{=} \PYG{n}{D}\PYG{p}{.}\PYG{n}{dept\PYGZus{}name} \PYG{k}{where} \PYG{n}{D}\PYG{p}{.}\PYG{n}{budget} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{80000}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Now if we delete (or dec budget) some department with budget \PYGZgt{} 80000. and then do select * from stud\PYGZus{}dept\PYGZus{}budg; it wont show name corresponding to that department.}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} CREATE}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{}     TRIGGER `event\PYGZus{}name` BEFORE/AFTER INSERT/UPDATE/DELETE}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{}     ON `database`.`table`}
