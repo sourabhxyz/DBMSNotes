@@ -12,7 +12,7 @@
 
 \PYG{k}{CREATE} \PYG{k}{TABLE} \PYG{n}{student} \PYG{p}{(}
     \PYG{n}{student\PYGZus{}id} \PYG{n+nb}{INT} \PYG{k}{PRIMARY} \PYG{k}{KEY}\PYG{p}{,}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} now automatically student\PYGZus{}id can\PYGZsq{}t be null.}
-    \PYG{n}{name} \PYG{n+nb}{VARCHAR} \PYG{p}{(}\PYG{l+m+mi}{30}\PYG{p}{),}
+    \PYG{n}{name} \PYG{n+nb}{VARCHAR} \PYG{p}{(}\PYG{l+m+mi}{30}\PYG{p}{),}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} if I add UNIQUE, like, name varchar (30) UNIQUE. then it will make sure that the value is unique among all rows. Or you can say in the end UNIQUE(ar1, ar2, ..)}
     \PYG{n}{major} \PYG{n+nb}{VARCHAR} \PYG{p}{(}\PYG{l+m+mi}{20}\PYG{p}{)}
 \PYG{p}{);}
 
@@ -27,13 +27,37 @@
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} aliter}
 \PYG{k}{alter} \PYG{k}{table} \PYG{n}{student} \PYG{k}{add} \PYG{n}{gender} \PYG{n+nb}{varchar} \PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)} \PYG{k}{check} \PYG{p}{(}\PYG{n}{gender} \PYG{k}{in} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}}\PYG{p}{))} \PYG{k}{not} \PYG{k}{null}
 
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} IMP NOTE: we can add not before in like pub\PYGZus{}id not in (select pub\PYGZus{}id from publisher);}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the total number of (distinct) students who have taken course sections taught}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} by the instructor with ID 10101}
+
+\PYG{k}{select} \PYG{k}{count} \PYG{p}{(}\PYG{k}{distinct} \PYG{n}{ID}\PYG{p}{)}
+\PYG{k}{from} \PYG{n}{takes}
+\PYG{k}{where} \PYG{p}{(}\PYG{n}{course\PYGZus{}id}\PYG{p}{,} \PYG{n}{sec\PYGZus{}id}\PYG{p}{,} \PYG{n}{semester}\PYG{p}{,} \PYG{k}{year}\PYG{p}{)} \PYG{k}{in}
+\PYG{p}{(}\PYG{k}{select} \PYG{n}{course\PYGZus{}id}\PYG{p}{,} \PYG{n}{sec\PYGZus{}id}\PYG{p}{,} \PYG{n}{semester}\PYG{p}{,} \PYG{k}{year} \PYG{k}{from} \PYG{n}{teaches} \PYG{k}{where} \PYG{n}{teaches}\PYG{p}{.}\PYG{n}{ID} \PYG{o}{=} \PYG{l+m+mi}{10101}\PYG{p}{);}
+
 \PYG{k}{ALTER} \PYG{k}{TABLE} \PYG{n}{student} \PYG{k}{DROP} \PYG{k}{COLUMN} \PYG{n}{gpa}\PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} drops our gpa column}
 
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Note that from r1, r2, ... rk. corresponds to taking cartesian product r1 * r2 * ... * rk.}
 \PYG{k}{SELECT} \PYG{o}{*} \PYG{k}{FROM} \PYG{n}{student}\PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} show all rows}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Note that select clause can contain arithmetic expressions involving +, \PYGZhy{}, *, /. Like select salary/12 from instructor. or select salary/12 as salary\PYGZus{}month from instructor.}
 
 \PYG{k}{SELECT} \PYG{l+s+s1}{\PYGZsq{}123\PYGZsq{}}\PYG{p}{;} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} will create at table with only one column \PYGZsq{}123\PYGZsq{}, and only one entry \PYGZsq{}123\PYGZsq{}.}
 
 \PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{student} \PYG{k}{VALUES} \PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Jack\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Biology\PYGZsq{}}\PYG{p}{);}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} add this row, parameters should be given in order}
 
 \PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{student} \PYG{p}{(}\PYG{n}{student\PYGZus{}id}\PYG{p}{,} \PYG{n}{name}\PYG{p}{)} \PYG{k}{VALUES} \PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Kate\PYGZsq{}}\PYG{p}{);}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Now we need not include \PYGZsq{}major\PYGZsq{}, it will show \PYGZsq{}NULL\PYGZsq{} in major now.}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} add all instructors to the student relation with tot\PYGZus{}creds set to 0}
+\PYG{k}{insert} \PYG{k}{into} \PYG{n}{student}
+\PYG{k}{select} \PYG{n}{ID}\PYG{p}{,} \PYG{n}{name}\PYG{p}{,} \PYG{n}{dept\PYGZus{}name}\PYG{p}{,} \PYG{l+m+mi}{0}
+\PYG{k}{from} \PYG{n}{instructor}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} The select from where statement is evaluated fully before any of its results are}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} inserted into the relation.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Otherwise queries like}
+\PYG{k}{insert} \PYG{k}{into} \PYG{n}{table1} \PYG{k}{select} \PYG{o}{*} \PYG{k}{from} \PYG{n}{table1}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} would cause problem}
 \end{Verbatim}

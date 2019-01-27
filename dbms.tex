@@ -84,6 +84,8 @@ Composite Key: Key which requires 2 or more attributes, Primary key can be a com
 
 Foreign Key: Attribute which will link us to another database table. Foreign key stores primary key of a row of another database table. A particular table can have more than one foreign key. And it can have NULL values. Primary key could be a composite of foreign keys.
 
+Referential Integrity - Ensures that a value that appears in one relation for a given set of attributes also appears for a certain set of attributes in another relation.
+Example:  If “Biology” is a department name appearing in one of the tuples in the instructor relation, then there exists a tuple in the department relation for “Biology”.
 \subsection{SQL}
 \begin{minted}{SQL}
 create database girrafe;
@@ -99,7 +101,7 @@ TIMESTAMP -- 'YYYY-MM-DD HH:MM:SS'
 
 CREATE TABLE student (
     student_id INT PRIMARY KEY,  -- now automatically student_id can't be null.
-    name VARCHAR (30),
+    name VARCHAR (30),  -- if I add UNIQUE, like, name varchar (30) UNIQUE. then it will make sure that the value is unique among all rows. Or you can say in the end UNIQUE(ar1, ar2, ..)
     major VARCHAR (20)
 );
 
@@ -114,15 +116,39 @@ alter table student add gender enum ('M', 'F') not null;  -- will give some defa
 -- aliter
 alter table student add gender varchar (1) check (gender in ('M', 'F')) not null
 
+-- IMP NOTE: we can add not before in like pub_id not in (select pub_id from publisher);
+
+-- Find the total number of (distinct) students who have taken course sections taught
+-- by the instructor with ID 10101
+
+select count (distinct ID)
+from takes
+where (course_id, sec_id, semester, year) in
+(select course_id, sec_id, semester, year from teaches where teaches.ID = 10101);
+
 ALTER TABLE student DROP COLUMN gpa;  -- drops our gpa column
 
+-- Note that from r1, r2, ... rk. corresponds to taking cartesian product r1 * r2 * ... * rk.
 SELECT * FROM student;  -- show all rows
+
+-- Note that select clause can contain arithmetic expressions involving +, -, *, /. Like select salary/12 from instructor. or select salary/12 as salary_month from instructor.
 
 SELECT '123'; -- will create at table with only one column '123', and only one entry '123'.
 
 INSERT INTO student VALUES (1, 'Jack', 'Biology');  -- add this row, parameters should be given in order
 
 INSERT INTO student (student_id, name) VALUES (2, 'Kate');  -- Now we need not include 'major', it will show 'NULL' in major now.
+
+-- add all instructors to the student relation with tot_creds set to 0
+insert into student
+select ID, name, dept_name, 0
+from instructor
+
+-- The select from where statement is evaluated fully before any of its results are
+-- inserted into the relation.
+-- Otherwise queries like
+insert into table1 select * from table1
+-- would cause problem
 \end{minted}
 \begin{minted}{SQL}
 UPDATE student
@@ -134,15 +160,42 @@ WHERE major = 'Biology';  -- other operators are <> (not equal), > (greater), <,
 -- SET name = 'Tom', major = 'undecided'
 -- WHERE student_id = 1;
 -- Note: If we remove WHERE then it will affect all of the rows.
+
+-- Increase salaries of instructors whose salary is over $100,000 by 3%, and all
+-- others by a 5%
+update instructor
+set salary = salary * 1.03
+where salary > 100000;
+update instructor
+set salary = salary * 1.05
+where salary <= 100000;
+-- The order is important
+-- Can be done better using the case statement
+
+update instructor
+set salary = case
+when salary <= 100000 then salary * 1.05
+else salary * 1.03
+end
+
 DELETE FROM student -- if we put semicolon at the end of this statement then it will delete all of the rows in the table
 WHERE name = 'Tom' AND major = 'undecided';
+
+-- Tuple comparison
+select name, course_id
+from instructor, teaches
+where (instructor.ID, dept_name) = (teaches.ID, 'Biology');
+-- similarly it could have been possible to do where tuple in ...
 ------------------
+-- https://bit.ly/2FUlWdx
 SELECT name, major
 FROM student
 ORDER by name DESC; -- will give the entries in the descending order of names. If we remove DESC then it will be order by ascending order. btw ASC can as well be used instead.
 -- ORDER by major, student_id DESC; -- will order by major and in case there is a tie then they will be ordered by descending student_id.
+-- order by credit desc, name asc
 -- We can add LIMIT 2; this would give us only 2 entries.
 -- We can do LIMIT 2 OFFSET 5; which will give entry 6, 7.
+-- [LIMIT {[offset,] row_count | row_count OFFSET offset}]
 -- select * from takes order by field (grade, 'S', 'A+', 'A', 'A-', ..., 'D-'); to order with specified order.
 -- aliter is given below, suppose the order is 2, 1, 3.
 select * from people, 
@@ -285,8 +338,34 @@ INSERT INTO works_with VALUES(102, 406, 15000);
 INSERT INTO works_with VALUES(105, 406, 130000);
 
 -- Find out all the different genders
-SELECT DISCINCT sex
+-- SQL allows duplication in query results.
+-- can use distinct to force elimination.
+-- if we would have used select sex, then it would have shown all rows under attribute sex under relation employee.
+SELECT DISTINCT sex
 FROM employee;
+
+-- Find the total number of instructors who teach a course in the Spring 2010
+semester
+select count (distinct ID)
+from teaches
+where semester = ’Spring’ and year = 2010;
+
+-- find the no. of tuples in course relation
+select count(*) from course;
+
+-- Find names of instructors with salary greater than that of some (at least one)
+-- instructor in the Biology department.
+select distinct T.name
+from instructor as T, instructor as S
+where T.salary > S.salary and S.dept name = ’Biology’;
+
+-- same query using some clause
+
+select name
+from instructor
+where salary > some (select salary
+from instructor
+where dept name = ’Biology’);
 
 -- Find all employee's id's and names who were born after 1969
 SELECT emp_id, first_name, last_name
@@ -308,6 +387,27 @@ FROM employee;
 SELECT AVG(salary)
 FROM employee;
 
+-- Find the names and average salaries of all departments whose average salary is
+-- greater than 42000
+
+select dept_name, avg (salary)
+from instructor
+group by dept_name
+having avg (salary) > 42000;
+
+-- predicates in the having clause are applied after the
+-- formation of groups whereas predicates in the where
+-- clause are applied before forming groups
+
+-- Delete all instructors whose salary is less than the average salary of instructors
+
+delete from instructor
+where salary < (select avg (salary)
+from instructor);
+
+-- Problem: as we delete tuples from deposit, the average salary
+-- changes but its not an issue with mysql/mariadb.
+
 -- Find the sum of all employee's salaries
 SELECT SUM(salary)
 FROM employee;
@@ -322,8 +422,15 @@ GROUP BY sex
 SELECT SUM(total_sales), emp_id
 FROM works_with
 GROUP BY emp_id;
--- IMP NOTE: sum does not avoid null values, null + something is always null so better check for null values.
+-- IMP NOTE: sum does not avoid null values, null + something is always null so better check for null values. Actually result of any arithmetic expression involving null is null.
+-- Need to confirm the above point as in slides it is mentioned that all aggregate operations except count (*) ignore tuples will null values on the aggregate attributes.
+-- And according to slides, if the collection has only null values then 
+-- • count returns 0
+-- • count(*) return number of rows with null values
+-- • all other aggregates return null
+
 select sum(tot_cred) from student where tot_cred is not null;
+-- if we want to check for null we could have written "is null" instead of "is not null".
 
 -- Find the total amount of money spent by each client
 SELECT SUM(total_sales), client_id
@@ -345,12 +452,16 @@ SELECT *
 FROM employee
 WHERE birth_day LIKE '_____10%';
 
+-- Match the string '100%'
+like '100 \%' escape '\'
+-- in above we use backslash (\) as the escape character.
+
 -- Find any clients who are schools
 SELECT *
 FROM client
 WHERE client_name LIKE '%Highschool%';
 
--- Union
+-- Union 
 
 -- Find a list of all clients & branch suppliers' names
 SELECT client.client_name AS Non-Employee_Entities, client.branch_id AS Branch_ID
@@ -359,7 +470,103 @@ UNION -- both above and below thing should have same number of columns and same 
 SELECT branch_supplier.supplier_name, branch_supplier.branch_id
 FROM branch_supplier;
 
--- JOINS (used to combine rows from two or more tables based on the related columns)
+-- Just like union with same rules we have INTERSECT and EXCEPT and each of them automatically eliminates duplicates that is it inherently assumes DISTINCT. To retain all duplicates use the corresponding multiset versions union all, intersect all, except all (in maria db all is not supported with intersect).
+
+-- Suppose a tuple occurs m times in r and n times in s, then, it occurs:
+-- • m + n times in r union all s
+-- • min(m,n) times in r intersect all s
+-- • max(0, m – n) times in r except all s
+
+-- Exist and not exist
+-- exists r iff r != phi
+-- not exists r iff r == phi
+
+-- Yet another way of specifying the query “Find all courses taught in both the Fall 2009 semester and in the Spring 2010 semester”
+
+select course_id
+from section as S
+where semester = ’Fall’ and year = 2009 and
+exists (select *
+from section as T
+where semester = ’Spring’ and year= 2010
+and S.course_id = T.course_id);
+
+-- Find all students who have taken all courses offered in the Biology department
+
+select distinct S.ID, S.name
+from student as S
+where not exists ( (select course_id
+from course
+where dept_name = ’Biology’)
+except
+(select T.course_id
+from takes as T
+where S.ID = T.ID));
+
+-- The unique construct tests whether a subquery has any duplicate tuples in its
+result.
+-- The unique construct evaluates to “true” if a given subquery contains no duplicates.
+-- Find all courses that were offered at most once in 2009
+select T.course_id
+from course as T
+where unique (select R.course_id
+from section as R
+where T.course_id= R.course_id
+and R.year = 2009);
+
+-- With
+-- The with clause provides a way of defining a temporary relation whose definition is
+-- available only to the query in which the with clause occurs.
+-- Find all departments with the maximum budget
+
+with max_budget (value) as
+(select max(budget)
+from department)
+select department.name
+from department, max_budget
+where department.budget = max_budget.value;
+
+-- Find all departments where the total salary is greater than the average
+of the total salary at all departments
+
+with dept _total (dept_name, value) as
+(select dept_name, sum(salary)
+from instructor
+group by dept_name),
+dept_total_avg(value) as
+(select avg(value)
+from dept_total)
+select dept_name
+from dept_total, dept_total_avg
+where dept_total.value > dept_total_avg.value;
+
+-- JOINS (used to combine rows from two or more tables based on the related columns) (Simply using 'join' then 'on' means that we are using inner join)
+-- In book it is written natural join where we don't have to specify "on". Also we have natural left/right/full outer join. (notice the word outer). If we dont use natural then we would have to write left/right/full outer join .. on <condition>
+-- Similarly in our normal join instead of writing "on" or "natural", we can write using <A1, A2, ..., Ak>
+-- IMP NOTE: 
+select *
+from student left outer join takes on student.ID= takes.ID;
+-- is different from 
+select *
+from student left outer join takes on true
+where student.ID= takes.ID;
+-- The earlier query, using the left outer join with the on condition, includes a tuple
+-- (70557, Snow, Physics, 0, null, null, null, null, null, null ), because there is no tuple
+-- in takes with ID = 70557. In the latter query, however, every tuple satisfies the join
+-- condition true, so no null-padded tuples are generated by the outer join. The outer
+-- join actually generates the Cartesian product of the two relations. Since there is
+-- no tuple in takes with ID = 70557, every time a tuple appears in the outer join with
+-- name = “Snow”, the values for student.ID and takes.ID must be different, and such
+-- tuples would be eliminated by the where clause predicate. Thus student Snow
+-- The earlier query, using the left outer join with the on condition, includes a tuple
+-- (70557, Snow, Physics, 0, null, null, null, null, null, null ), because there is no tuple
+-- in takes with ID = 70557. In the latter query, however, every tuple satisfies the join
+-- condition true, so no null-padded tuples are generated by the outer join. The outer
+-- join actually generates the Cartesian product of the two relations. Since there is
+-- no tuple in takes with ID = 70557, every time a tuple appears in the outer join with
+-- name = “Snow”, the values for student.ID and takes.ID must be different, and such
+-- tuples would be eliminated by the where clause predicate. Thus student Snow
+-- never appears in the result of the latter query.never appears in the result of the latter query.
 
 -- Add the extra branch
 INSERT INTO branch VALUES(4, "Buffalo", NULL, NULL);  -- here I have used double quotes but strings can as well be represented with single quotes.
@@ -431,16 +638,58 @@ courses, the output for them should show total credit 0.
 
 update student as ST, (select B.ID, coalesce(B.crd, 0) as cred from (select J.ID, sum(C.credits) as crd from (select N.ID, N.grd, N.course_id from (select M.ID, coalesce(M.grade, 'N') as grd, M.course_id from (select S.ID, S.name, T.course_id, T.grade from student as S left join takes as T on S.ID = T.ID) as M) as N) as J left join course as C on J.course_id = C.course_id where J.grd <> 'F' group by J.ID) as B) as TEMP set tot_cred = TEMP.cred where ST.ID = TEMP.ID;
 
+-- Maybe it could have been done like this
+
+update student S
+set tot_cred = (select sum(credits)
+from takes, course
+where takes.course_id = course.course_id and
+S.ID= takes.ID.and
+takes.grade <> ’F’ and
+takes.grade is not null);
+
+-- Sets tot_creds to null for students who have not taken any course
+-- Instead of sum(credits), use:
+
+case
+when sum(credits) is not null then sum(credits)
+else 0
+end
+
 -- deleting entries in the table when they have foreign keys associated to them
 -- ON DELETE NULL means that say if we delete Michael Scott then second entry in the branch table will get mgr_id set to NULL whereas in ON DELETE CASCADE the entire row will get deleted in branch table. Use ON DELETE CASCADE when that foreign key is very important like say it forms a primary key.
+-- If you set the relation ship to be ON DELETE CASCADE, when you run a DELETE statement on a parent table it will DELETE all the corresponding rows from the CHILD table automatically. But the RESTRICT (which is the default foreign key relationship behavior) is when you try to delete a row from the parent table and there is a row in the child table with the same ID, it will fail complaining about the existing child rows.
+-- Similarly we could have done on update cascade, on delete set null/default
 
 -- Views
+-- SQL allows a “virtual relation” to be defined by a query, and the
+-- relation conceptually contains the result of the query. The virtual relation is not
+-- precomputed and stored, but instead is computed by executing the query whenever the virtual relation is used. Thus if table changes, view changes.
+-- Any such relation that is not part of the logical model, but is made visible to a user as a virtual relation, is called a view
 
 -- Create view of students who are studying in a department with budget more than 80000
 
 create view stud_dept_budg as select S.ID, S.name, S.dept_name, D.budget from student as S join department as D on S.dept_name = D.dept_name where D.budget > 80000;
 
 -- Now if we delete (or dec budget) some department with budget > 80000. and then do select * from stud_dept_budg; it wont show name corresponding to that department.
+-- We can now also do select building from stud_dept_budg where <something>
+
+-- One view may be used in the expression defining another view. For example,
+-- we can define a view physics fall 2009 watson that lists the course ID and room
+-- number of all Physics courses offered in the Fall 2009 semester in the Watson
+-- building as follows:
+-- create view physics fall 2009 watson as
+-- select course id, room number
+-- from physics_fall_2009  -- Note that this physics_fall_2009 is inturn a view
+-- where building= ’Watson’;
+-- 
+-- Certain database systems allow view relations to be stored, but they make sure
+-- that, if the actual relations used in the view definition change, the view is kept
+-- up-to-date. Such views are called materialized views.
+-- The process of keeping the materialized view up-to-date is called materialized view maintenance (or often, just view maintenance) 
+-- 
+-- Updates on view are generally tough to implement and hence isn't much supported by database systems
+
 -- CREATE
 --     TRIGGER `event_name` BEFORE/AFTER INSERT/UPDATE/DELETE
 --     ON `database`.`table`
@@ -550,6 +799,18 @@ queries submitted to the system.
 
 3) Transaction Management:- 
 
+A transaction consists of a sequence of query and/or update statements.
+Commit work commits the current transaction; that is, it makes the updates
+performed by the transaction become permanent in the database. After the
+transaction is committed, a new transaction is automatically started.
+Rollback work causes the current transaction to be rolled back; that is, it
+undoes all the updates performed by the SQL statements in the transaction.
+Thus, the database state is restored to what it was before the first statement
+of the transaction was executed.
+Once a transaction has executed commit work, its
+effects can no longer be undone by rollback work. The database system guarantees that in the event of some failure, such as an error in one of the SQL statements,
+a power outage, or a system crash, a transaction’s effects will be rolled back if it
+has not yet executed commit work
 Transaction: is a collection of operations that performs a single 
 logical function in a database application
 
@@ -595,4 +856,8 @@ The primary key of a weak entity set is formed by the primary key of the strong 
 See slides.
 \subsection{Lect6}
 See slides.
+\subsection{Lect7-9}
+In slide, see slide: 25, 26, 31
+\subsection{Lect10}
+Nothing. All incorporated into this notes.
 \end{document}
