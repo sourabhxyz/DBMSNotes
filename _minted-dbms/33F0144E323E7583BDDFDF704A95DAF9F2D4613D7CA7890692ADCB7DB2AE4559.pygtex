@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PYG{k}{grant} \PYG{k}{select} \PYG{k}{on} \PYG{n}{department} \PYG{k}{to} \PYG{n}{Amit} \PYG{k}{with} \PYG{k}{grant} \PYG{k}{option}\PYG{p}{;}
+\end{Verbatim}

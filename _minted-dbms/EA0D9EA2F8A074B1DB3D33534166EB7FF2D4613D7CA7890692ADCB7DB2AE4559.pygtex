@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{revoke} \PYG{o}{\PYGZlt{}}\PYG{n}{privilege} \PYG{n}{list}\PYG{o}{\PYGZgt{}}
+\PYG{k}{on} \PYG{o}{\PYGZlt{}}\PYG{n}{relation} \PYG{n}{name} \PYG{k}{or} \PYG{k}{view} \PYG{n}{name}\PYG{o}{\PYGZgt{}} \PYG{k}{from} \PYG{o}{\PYGZlt{}}\PYG{k}{user} \PYG{n}{list}\PYG{o}{\PYGZgt{}}
+\end{Verbatim}

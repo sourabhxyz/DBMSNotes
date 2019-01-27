@@ -661,6 +661,14 @@ end
 -- If you set the relation ship to be ON DELETE CASCADE, when you run a DELETE statement on a parent table it will DELETE all the corresponding rows from the CHILD table automatically. But the RESTRICT (which is the default foreign key relationship behavior) is when you try to delete a row from the parent table and there is a row in the child table with the same ID, it will fail complaining about the existing child rows.
 -- Similarly we could have done on update cascade, on delete set null/default
 
+-- create type construct in SQL creates user-defined type
+create type Dollars as numeric (12,2) final 
+
+create table department
+(dept_name varchar (20),
+building varchar (15),
+budget Dollars);
+
 -- Views
 -- SQL allows a “virtual relation” to be defined by a query, and the
 -- relation conceptually contains the result of the query. The virtual relation is not
@@ -860,4 +868,181 @@ See slides.
 In slide, see slide: 25, 26, 31
 \subsection{Lect10}
 Nothing. All incorporated into this notes.
+\subsection{Lect11-12}
+\textbf{Authorization}
+
+Forms of authorization on parts of  the database:
+
+Read - allows reading, but not modification of data.
+
+Insert - allows insertion of new data, but not modification of existing data.
+
+Update - allows modification, but not deletion of data.
+
+Delete - allows deletion of data.
+
+Forms of authorization to modify the database schema
+
+Index - allows creation and deletion of indices.
+
+Resources - allows creation of new relations.
+
+Alteration - allows addition or deletion of attributes in a relation.
+
+Drop - allows deletion of relations.
+
+The grant statement is used to confer authorization
+
+\begin{minted}{SQL}
+        grant <privilege list>
+        on <relation name or view name> to <user list>
+\end{minted}
+$<$user list$>$ is:
+a user-id
+public, which allows all valid users the privilege granted
+A role (more on this later)
+
+Granting a privilege on a view does not imply granting any privileges on the underlying relations.
+
+The grantor of the privilege must already hold the privilege on the specified item (or be the database administrator).
+
+\textbf{Privileges in SQL}
+
+select: allows read access to relation,or the ability to query using the view
+
+Example: grant users U1, U2, and U3 select authorization on the instructor relation:
+
+            grant select on instructor to U1, U2, U3
+
+insert: the ability to insert tuples
+
+update: the ability  to update using the SQL update statement
+
+delete: the ability to delete tuples.
+
+all privileges: used as a short form for all the allowable privileges
+
+The revoke statement is used to revoke authorization.
+\begin{minted}{SQL}
+revoke <privilege list>
+on <relation name or view name> from <user list>
+\end{minted}
+
+Example:
+revoke select on branch  from U1, U2, U3
+$<$privilege-list$>$ may be all to revoke all privileges the revokee may hold.
+
+If $<$revokee-list$>$ includes public, all users lose the privilege except those granted it explicitly.
+
+If the same privilege was granted twice to the same user by different grantees, the user may retain the privilege after the revocation.
+
+All privileges that depend on the privilege being revoked are also revoked.
+
+\textbf{Roles}
+
+create role instructor;
+
+grant instructor to Amit;
+
+Privileges can be granted to roles:
+
+grant select on takes to instructor;
+
+Roles can be granted to users, as well as to other roles
+
+create role teaching\_assistant
+
+grant teaching\_assistant to instructor;
+
+Instructor inherits all privileges of teaching\_assistant
+
+Chain of roles
+
+create role dean;
+
+grant instructor to dean;
+
+grant dean to Satoshi;
+
+\textbf{Authorization on views}
+
+\begin{minted}{SQL}
+create view geo instructor as
+(select *
+from instructor
+where dept name = ’Geology’);
+
+grant select on geo_instructor to  geo_staff
+-- Suppose that a  geo_staff member issues
+select *
+from geo_instructor;
+\end{minted}
+
+A user who creates a view does not necessarily receive all privileges on that
+view. She receives only those privileges that provide no additional authorization
+beyond those that she already had. For example, a user who creates a view cannot
+be given update authorization on a view without having update authorization
+on the relations used to define the view. If a user creates a view on which no
+authorization can be granted, the system will deny the view creation request.
+In our geo instructor view example, the creator of the view must have select
+authorization on the instructor relation
+
+\textbf{Authorizations on Schema}
+
+The SQL standard specifies a primitive authorization mechanism for the database
+schema: Only the owner of the schema can carry out any modification to the
+schema, such as creating or deleting relations, adding or dropping attributes of
+relations, and adding or dropping indices.
+
+however, SQL includes a references privilege that permits a user to declare
+foreign keys when creating relations. The SQL references privilege is granted on
+specific attributes in a manner like that for the update privilege. The following
+grant statement allows user Mariano to create relations that reference the key
+branch name of the branch relation as a foreign key:
+grant references (dept name) on department to Mariano;
+
+\textbf{More on transfer of privilages}
+
+By default, a user/role that is granted a
+privilege is not authorized to grant that privilege to another user/role. If we wish
+to grant a privilege and to allow the recipient to pass the privilege on to other
+users, we append the with grant option clause to the appropriate grant command.
+\begin{minted}{SQL}
+    grant select on department to Amit with grant option;
+\end{minted}
+
+The creator of an object (relation/view/role) holds all privileges on the object,
+including the privilege to grant privileges to others.
+
+Suppose that the database administrator decides to revoke the authorization of
+user U1. Since U4 has authorization from U1, that authorization should be revoked
+as well. However, U5 was granted authorization by both U1 and U2. Since the
+database administrator did not revoke update authorization on teaches from U2,
+U5 retains update authorization on teaches. If U2 eventually revokes authorization
+from U5, then U5 loses the authorization.
+
+A pair of devious users might attempt to defeat the rules for revocation
+of authorization by granting authorization to each other. For example, if U2 is
+initially granted an authorization by the database administrator, and U2 further
+grants it to U3. Suppose U3 now grants the privilege back to U2. If the database
+administrator revokes authorization from U2, it might appear that U2 retains
+authorization through U3. However, note that once the administrator revokes
+authorization from U2, there is no path in the authorization graph from the root
+to either U2 or to U3. Thus, SQL ensures that the authorization is revoked from
+both the users.
+
+As we just saw, revocation of a privilege from a user/role may cause other
+users/roles also to lose that privilege. This behavior is called cascading revocation
+
+In most database systems, cascading is the default behavior. However, the revoke
+statement may specify restrict in order to prevent cascading revocation:
+revoke select on department from Amit, Satoshi restrict;
+
+The keyword cascade can be used instead of restrict to indicate that revocation
+should cascade; however, it can be omitted, as we have done in the preceding
+examples, since it is the default behavior
+
+The following revoke statement revokes only the grant option, rather than
+the actual select privilege:
+revoke grant option for select on department from Amit;
 \end{document}

@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{create} \PYG{k}{view} \PYG{n}{geo} \PYG{n}{instructor} \PYG{k}{as}
+\PYG{p}{(}\PYG{k}{select} \PYG{o}{*}
+\PYG{k}{from} \PYG{n}{instructor}
+\PYG{k}{where} \PYG{n}{dept} \PYG{n}{name} \PYG{o}{=} \PYG{err}{’}\PYG{n}{Geology}\PYG{err}{’}\PYG{p}{);}
+
+\PYG{k}{grant} \PYG{k}{select} \PYG{k}{on} \PYG{n}{geo\PYGZus{}instructor} \PYG{k}{to}  \PYG{n}{geo\PYGZus{}staff}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Suppose that a  geo\PYGZus{}staff member issues}
+\PYG{k}{select} \PYG{o}{*}
+\PYG{k}{from} \PYG{n}{geo\PYGZus{}instructor}\PYG{p}{;}
+\end{Verbatim}

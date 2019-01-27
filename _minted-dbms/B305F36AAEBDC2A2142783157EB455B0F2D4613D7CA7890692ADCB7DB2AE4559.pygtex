@@ -448,6 +448,14 @@
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} If you set the relation ship to be ON DELETE CASCADE, when you run a DELETE statement on a parent table it will DELETE all the corresponding rows from the CHILD table automatically. But the RESTRICT (which is the default foreign key relationship behavior) is when you try to delete a row from the parent table and there is a row in the child table with the same ID, it will fail complaining about the existing child rows.}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Similarly we could have done on update cascade, on delete set null/default}
 
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} create type construct in SQL creates user\PYGZhy{}defined type}
+\PYG{k}{create} \PYG{k}{type} \PYG{n}{Dollars} \PYG{k}{as} \PYG{n+nb}{numeric} \PYG{p}{(}\PYG{l+m+mi}{12}\PYG{p}{,}\PYG{l+m+mi}{2}\PYG{p}{)} \PYG{k}{final}
+
+\PYG{k}{create} \PYG{k}{table} \PYG{n}{department}
+\PYG{p}{(}\PYG{n}{dept\PYGZus{}name} \PYG{n+nb}{varchar} \PYG{p}{(}\PYG{l+m+mi}{20}\PYG{p}{),}
+\PYG{n}{building} \PYG{n+nb}{varchar} \PYG{p}{(}\PYG{l+m+mi}{15}\PYG{p}{),}
+\PYG{n}{budget} \PYG{n}{Dollars}\PYG{p}{);}
+
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Views}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} SQL allows a “virtual relation” to be defined by a query, and the}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} relation conceptually contains the result of the query. The virtual relation is not}
