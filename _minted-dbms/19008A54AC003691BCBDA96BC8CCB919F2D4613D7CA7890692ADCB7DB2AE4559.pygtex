@@ -471,6 +471,21 @@
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{}}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Updates on view are generally tough to implement and hence isn\PYGZsq{}t much supported by database systems}
 
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Users}
+
+\PYG{k}{create} \PYG{k}{user} \PYG{l+s+s1}{\PYGZsq{}tom\PYGZsq{}}\PYG{o}{@}\PYG{l+s+s1}{\PYGZsq{}localhost\PYGZsq{}} \PYG{n}{identified} \PYG{k}{by} \PYG{l+s+s1}{\PYGZsq{}iamtom\PYGZsq{}}\PYG{p}{;}
+\PYG{k}{grant} \PYG{k}{select} \PYG{k}{on} \PYG{n}{bld\PYGZus{}bdg} \PYG{k}{to} \PYG{l+s+s1}{\PYGZsq{}tom\PYGZsq{}}\PYG{o}{@}\PYG{l+s+s1}{\PYGZsq{}localhost\PYGZsq{}}\PYG{p}{;}
+\PYG{k}{drop} \PYG{k}{user} \PYG{l+s+s1}{\PYGZsq{}tom\PYGZsq{}}\PYG{o}{@}\PYG{l+s+s1}{\PYGZsq{}localhost\PYGZsq{}}\PYG{p}{;}
+\PYG{k}{create} \PYG{k}{role} \PYG{l+s+s1}{\PYGZsq{}see\PYGZus{}students\PYGZsq{}}\PYG{p}{;}
+\PYG{k}{grant} \PYG{k}{select} \PYG{k}{on} \PYG{n}{stud\PYGZus{}cred} \PYG{k}{to} \PYG{l+s+s1}{\PYGZsq{}see\PYGZus{}students\PYGZsq{}}\PYG{p}{;}
+\PYG{k}{grant} \PYG{l+s+s1}{\PYGZsq{}see\PYGZus{}students\PYGZsq{}} \PYG{k}{to} \PYG{l+s+s1}{\PYGZsq{}tom\PYGZsq{}}\PYG{o}{@}\PYG{l+s+s1}{\PYGZsq{}localhost\PYGZsq{}}\PYG{p}{;}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} when logged in as tom, to activate role do}
+\PYG{k}{set} \PYG{k}{role} \PYG{n}{see\PYGZus{}students}\PYG{p}{;}
+\PYG{k}{revoke} \PYG{l+s+s1}{\PYGZsq{}see\PYGZus{}instructors\PYGZsq{}} \PYG{k}{from} \PYG{l+s+s1}{\PYGZsq{}tom\PYGZsq{}}\PYG{o}{@}\PYG{l+s+s1}{\PYGZsq{}localhost\PYGZsq{}}\PYG{p}{;}
+\PYG{k}{create} \PYG{k}{role} \PYG{l+s+s1}{\PYGZsq{}admin1\PYGZsq{}}\PYG{p}{;}
+\PYG{k}{grant} \PYG{k}{select} \PYG{k}{on} \PYG{n}{department} \PYG{k}{to} \PYG{l+s+s1}{\PYGZsq{}admin1\PYGZsq{}} \PYG{k}{with} \PYG{k}{grant} \PYG{k}{option}\PYG{p}{;}
+\PYG{k}{revoke} \PYG{k}{select} \PYG{k}{on} \PYG{n}{department} \PYG{k}{from} \PYG{l+s+s1}{\PYGZsq{}nibbles\PYGZsq{}}\PYG{o}{@}\PYG{l+s+s1}{\PYGZsq{}localhost\PYGZsq{}}\PYG{p}{;} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} to revoke permission.}
+
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} CREATE}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{}     TRIGGER `event\PYGZus{}name` BEFORE/AFTER INSERT/UPDATE/DELETE}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{}     ON `database`.`table`}

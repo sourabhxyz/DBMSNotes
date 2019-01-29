@@ -20,6 +20,10 @@
 
 \PYG{k}{DROP} \PYG{k}{TABLE} \PYG{n}{student}\PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Deletes our table}
 
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} bLab}
+\PYG{k}{alter} \PYG{k}{table} \PYG{n}{department} \PYG{k}{modify} \PYG{n}{dept\PYGZus{}name} \PYG{n+nb}{varchar} \PYG{p}{(}\PYG{l+m+mi}{20}\PYG{p}{)} \PYG{k}{default} \PYG{k}{null} \PYG{k}{primary} \PYG{k}{key}\PYG{p}{;}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} eLab}
+
 \PYG{k}{ALTER} \PYG{k}{TABLE} \PYG{n}{student} \PYG{k}{ADD} \PYG{n}{gpa} \PYG{n+nb}{DECIMAL} \PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{)} \PYG{k}{default} \PYG{l+m+mi}{0}\PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Add a column to our table}
 
 \PYG{k}{alter} \PYG{k}{table} \PYG{n}{student} \PYG{k}{add} \PYG{n}{gender} \PYG{n}{enum} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}}\PYG{p}{)} \PYG{k}{not} \PYG{k}{null}\PYG{p}{;}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} will give some default value (like \PYGZsq{}M\PYGZsq{}) to already existing rows}

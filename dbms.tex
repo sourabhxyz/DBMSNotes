@@ -109,6 +109,10 @@ DESCRIBE student;  -- Describes our table
 
 DROP TABLE student;  -- Deletes our table
 
+-- bLab
+alter table department modify dept_name varchar (20) default null primary key;
+-- eLab
+
 ALTER TABLE student ADD gpa DECIMAL (3, 2) default 0;  -- Add a column to our table
 
 alter table student add gender enum ('M', 'F') not null;  -- will give some default value (like 'M') to already existing rows
@@ -684,6 +688,21 @@ create view stud_dept_budg as select S.ID, S.name, S.dept_name, D.budget from st
 -- 
 -- Updates on view are generally tough to implement and hence isn't much supported by database systems
 
+-- Users
+
+create user 'tom'@'localhost' identified by 'iamtom';
+grant select on bld_bdg to 'tom'@'localhost';
+drop user 'tom'@'localhost';
+create role 'see_students';
+grant select on stud_cred to 'see_students';
+grant 'see_students' to 'tom'@'localhost';
+-- when logged in as tom, to activate role do 
+set role see_students;
+revoke 'see_instructors' from 'tom'@'localhost';
+create role 'admin1';
+grant select on department to 'admin1' with grant option;
+revoke select on department from 'nibbles'@'localhost'; -- to revoke permission.
+
 -- CREATE
 --     TRIGGER `event_name` BEFORE/AFTER INSERT/UPDATE/DELETE
 --     ON `database`.`table`
@@ -1036,4 +1055,8 @@ examples, since it is the default behavior
 The following revoke statement revokes only the grant option, rather than
 the actual select privilege:
 revoke grant option for select on department from Amit;
+
+
+Very important note: If the user with some role say 'admin1' (this role had permission to grant select on department table) and another user with similar role 'admin2' gave permission on select to 3rd user 'nibbles' then now if user1 revoked this permission then this permission will actually get revoked from 'nibbles' (no cascading). Cascading will happen if we delete the role 'admin1' (not deleting the user under 'admin1' role as 'admin1' role will still persist) then cascading will happen.
 \end{document}
+
