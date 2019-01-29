@@ -5,7 +5,7 @@
 \contentsline {subsection}{\numberline {2.3}Lect2}{7}{subsection.2.3}
 \contentsline {subsection}{\numberline {2.4}Lect3}{7}{subsection.2.4}
 \contentsline {subsection}{\numberline {2.5}Lect4-5}{7}{subsection.2.5}
-\contentsline {subsection}{\numberline {2.6}Lect6}{8}{subsection.2.6}
-\contentsline {subsection}{\numberline {2.7}Lect7-9}{8}{subsection.2.7}
-\contentsline {subsection}{\numberline {2.8}Lect10}{8}{subsection.2.8}
+\contentsline {subsection}{\numberline {2.6}Lect6}{7}{subsection.2.6}
+\contentsline {subsection}{\numberline {2.7}Lect7-9}{7}{subsection.2.7}
+\contentsline {subsection}{\numberline {2.8}Lect10}{7}{subsection.2.8}
 \contentsline {subsection}{\numberline {2.9}Lect11-12}{8}{subsection.2.9}

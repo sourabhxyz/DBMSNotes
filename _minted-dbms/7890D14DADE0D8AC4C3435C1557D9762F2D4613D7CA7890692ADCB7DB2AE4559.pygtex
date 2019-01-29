@@ -205,10 +205,6 @@
 \PYG{k}{FROM} \PYG{n}{employee}
 \PYG{k}{GROUP} \PYG{k}{BY} \PYG{n}{sex}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the total sales of each salesman}
-\PYG{k}{SELECT} \PYG{k}{SUM}\PYG{p}{(}\PYG{n}{total\PYGZus{}sales}\PYG{p}{),} \PYG{n}{emp\PYGZus{}id}
-\PYG{k}{FROM} \PYG{n}{works\PYGZus{}with}
-\PYG{k}{GROUP} \PYG{k}{BY} \PYG{n}{emp\PYGZus{}id}\PYG{p}{;}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} IMP NOTE: sum does not avoid null values, null + something is always null so better check for null values. Actually result of any arithmetic expression involving null is null.}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Need to confirm the above point as in slides it is mentioned that all aggregate operations except count (*) ignore tuples will null values on the aggregate attributes.}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} And according to slides, if the collection has only null values then}
@@ -218,11 +214,6 @@
 
 \PYG{k}{select} \PYG{k}{sum}\PYG{p}{(}\PYG{n}{tot\PYGZus{}cred}\PYG{p}{)} \PYG{k}{from} \PYG{n}{student} \PYG{k}{where} \PYG{n}{tot\PYGZus{}cred} \PYG{k}{is} \PYG{k}{not} \PYG{k}{null}\PYG{p}{;}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} if we want to check for null we could have written \PYGZdq{}is null\PYGZdq{} instead of \PYGZdq{}is not null\PYGZdq{}.}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the total amount of money spent by each client}
-\PYG{k}{SELECT} \PYG{k}{SUM}\PYG{p}{(}\PYG{n}{total\PYGZus{}sales}\PYG{p}{),} \PYG{n}{client\PYGZus{}id}
-\PYG{k}{FROM} \PYG{n}{works\PYGZus{}with}
-\PYG{k}{GROUP} \PYG{k}{BY} \PYG{n}{client\PYGZus{}id}\PYG{p}{;}
 
 \PYG{k}{select} \PYG{n}{dept\PYGZus{}name} \PYG{k}{from} \PYG{n}{department}\PYG{p}{,} \PYG{p}{(}\PYG{k}{select} \PYG{k}{max}\PYG{p}{(}\PYG{n}{budget}\PYG{p}{)} \PYG{k}{as} \PYG{n}{MX} \PYG{k}{from} \PYG{n}{department}\PYG{p}{)} \PYG{k}{as} \PYG{n}{T} \PYG{k}{where} \PYG{n}{budget} \PYG{o}{=} \PYG{n}{T}\PYG{p}{.}\PYG{n}{MX}\PYG{p}{;}
 
@@ -262,7 +253,7 @@
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Suppose a tuple occurs m times in r and n times in s, then, it occurs:}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} • m + n times in r union all s}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} • min(m,n) times in r intersect all s}
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} • max(0, m – n) times in r except all s}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} • max(0, m \PYGZhy{} n) times in r except all s}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Exist and not exist}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} exists r iff r != phi}
@@ -290,8 +281,7 @@
 \PYG{k}{from} \PYG{n}{takes} \PYG{k}{as} \PYG{n}{T}
 \PYG{k}{where} \PYG{n}{S}\PYG{p}{.}\PYG{n}{ID} \PYG{o}{=} \PYG{n}{T}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{));}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} The unique construct tests whether a subquery has any duplicate tuples in its}
-\PYG{k}{result}\PYG{p}{.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} The unique construct tests whether a subquery has any duplicate tuples in its result.}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} The unique construct evaluates to “true” if a given subquery contains no duplicates.}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all courses that were offered at most once in 2009}
 \PYG{k}{select} \PYG{n}{T}\PYG{p}{.}\PYG{n}{course\PYGZus{}id}
@@ -313,8 +303,7 @@
 \PYG{k}{from} \PYG{n}{department}\PYG{p}{,} \PYG{n}{max\PYGZus{}budget}
 \PYG{k}{where} \PYG{n}{department}\PYG{p}{.}\PYG{n}{budget} \PYG{o}{=} \PYG{n}{max\PYGZus{}budget}\PYG{p}{.}\PYG{n}{value}\PYG{p}{;}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all departments where the total salary is greater than the average}
-\PYG{k}{of} \PYG{n}{the} \PYG{n}{total} \PYG{n}{salary} \PYG{k}{at} \PYG{k}{all} \PYG{n}{departments}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all departments where the total salary is greater than the average of the total salary at all departments}
 
 \PYG{k}{with} \PYG{n}{dept} \PYG{n}{\PYGZus{}total} \PYG{p}{(}\PYG{n}{dept\PYGZus{}name}\PYG{p}{,} \PYG{n}{value}\PYG{p}{)} \PYG{k}{as}
 \PYG{p}{(}\PYG{k}{select} \PYG{n}{dept\PYGZus{}name}\PYG{p}{,} \PYG{k}{sum}\PYG{p}{(}\PYG{n}{salary}\PYG{p}{)}
@@ -418,10 +407,7 @@
                           \PYG{k}{WHERE} \PYG{n}{totals} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{100000}
 \PYG{p}{);}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Correct the tot\PYGZus{}credit attributes for each tuple in student table such that total credit is}
-\PYG{n}{equal} \PYG{k}{to} \PYG{n}{the} \PYG{n}{credit} \PYG{k}{of} \PYG{n}{courses} \PYG{n}{successfully} \PYG{n}{completed} \PYG{k}{by} \PYG{n}{the} \PYG{n}{student}\PYG{p}{.} \PYG{n}{Here} \PYG{n}{successfully}
-\PYG{n}{completed} \PYG{n}{means} \PYG{n}{student} \PYG{n}{has} \PYG{n}{a} \PYG{n}{grade} \PYG{n}{that} \PYG{k}{is} \PYG{k}{not} \PYG{err}{‘}\PYG{n}{F}\PYG{err}{’} \PYG{p}{.} \PYG{n}{Students} \PYG{n}{who} \PYG{n}{did} \PYG{k}{not} \PYG{n}{take} \PYG{k}{any}
-\PYG{n}{courses}\PYG{p}{,} \PYG{n}{the} \PYG{k}{output} \PYG{k}{for} \PYG{n}{them} \PYG{n}{should} \PYG{k}{show} \PYG{n}{total} \PYG{n}{credit} \PYG{l+m+mi}{0}\PYG{p}{.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Correct the tot\PYGZus{}credit attributes for each tuple in student table such that total credit is equal to the credit of courses successfully completed by the student. Here successfully completed means student has a grade that is not ‘F’ . Students who did not take any courses, the output for them should show total credit 0.}
 
 \PYG{k}{update} \PYG{n}{student} \PYG{k}{as} \PYG{n}{ST}\PYG{p}{,} \PYG{p}{(}\PYG{k}{select} \PYG{n}{B}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{,} \PYG{n}{coalesce}\PYG{p}{(}\PYG{n}{B}\PYG{p}{.}\PYG{n}{crd}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{k}{as} \PYG{n}{cred} \PYG{k}{from} \PYG{p}{(}\PYG{k}{select} \PYG{n}{J}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{,} \PYG{k}{sum}\PYG{p}{(}\PYG{k}{C}\PYG{p}{.}\PYG{n}{credits}\PYG{p}{)} \PYG{k}{as} \PYG{n}{crd} \PYG{k}{from} \PYG{p}{(}\PYG{k}{select} \PYG{n}{N}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{,} \PYG{n}{N}\PYG{p}{.}\PYG{n}{grd}\PYG{p}{,} \PYG{n}{N}\PYG{p}{.}\PYG{n}{course\PYGZus{}id} \PYG{k}{from} \PYG{p}{(}\PYG{k}{select} \PYG{n}{M}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{,} \PYG{n}{coalesce}\PYG{p}{(}\PYG{n}{M}\PYG{p}{.}\PYG{n}{grade}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}N\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{grd}\PYG{p}{,} \PYG{n}{M}\PYG{p}{.}\PYG{n}{course\PYGZus{}id} \PYG{k}{from} \PYG{p}{(}\PYG{k}{select} \PYG{n}{S}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{,} \PYG{n}{S}\PYG{p}{.}\PYG{n}{name}\PYG{p}{,} \PYG{n}{T}\PYG{p}{.}\PYG{n}{course\PYGZus{}id}\PYG{p}{,} \PYG{n}{T}\PYG{p}{.}\PYG{n}{grade} \PYG{k}{from} \PYG{n}{student} \PYG{k}{as} \PYG{n}{S} \PYG{k}{left} \PYG{k}{join} \PYG{n}{takes} \PYG{k}{as} \PYG{n}{T} \PYG{k}{on} \PYG{n}{S}\PYG{p}{.}\PYG{n}{ID} \PYG{o}{=} \PYG{n}{T}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{)} \PYG{k}{as} \PYG{n}{M}\PYG{p}{)} \PYG{k}{as} \PYG{n}{N}\PYG{p}{)} \PYG{k}{as} \PYG{n}{J} \PYG{k}{left} \PYG{k}{join} \PYG{n}{course} \PYG{k}{as} \PYG{k}{C} \PYG{k}{on} \PYG{n}{J}\PYG{p}{.}\PYG{n}{course\PYGZus{}id} \PYG{o}{=} \PYG{k}{C}\PYG{p}{.}\PYG{n}{course\PYGZus{}id} \PYG{k}{where} \PYG{n}{J}\PYG{p}{.}\PYG{n}{grd} \PYG{o}{\PYGZlt{}\PYGZgt{}} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}} \PYG{k}{group} \PYG{k}{by} \PYG{n}{J}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{)} \PYG{k}{as} \PYG{n}{B}\PYG{p}{)} \PYG{k}{as} \PYG{n}{TEMP} \PYG{k}{set} \PYG{n}{tot\PYGZus{}cred} \PYG{o}{=} \PYG{n}{TEMP}\PYG{p}{.}\PYG{n}{cred} \PYG{k}{where} \PYG{n}{ST}\PYG{p}{.}\PYG{n}{ID} \PYG{o}{=} \PYG{n}{TEMP}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{;}
 

@@ -418,10 +418,6 @@ SELECT COUNT(sex), sex  -- now we have two columns, viz, COUNT(sex) and sex.
 FROM employee
 GROUP BY sex
 
--- Find the total sales of each salesman
-SELECT SUM(total_sales), emp_id
-FROM works_with
-GROUP BY emp_id;
 -- IMP NOTE: sum does not avoid null values, null + something is always null so better check for null values. Actually result of any arithmetic expression involving null is null.
 -- Need to confirm the above point as in slides it is mentioned that all aggregate operations except count (*) ignore tuples will null values on the aggregate attributes.
 -- And according to slides, if the collection has only null values then 
@@ -431,11 +427,6 @@ GROUP BY emp_id;
 
 select sum(tot_cred) from student where tot_cred is not null;
 -- if we want to check for null we could have written "is null" instead of "is not null".
-
--- Find the total amount of money spent by each client
-SELECT SUM(total_sales), client_id
-FROM works_with
-GROUP BY client_id;
 
 select dept_name from department, (select max(budget) as MX from department) as T where budget = T.MX;
 
@@ -475,7 +466,7 @@ FROM branch_supplier;
 -- Suppose a tuple occurs m times in r and n times in s, then, it occurs:
 -- • m + n times in r union all s
 -- • min(m,n) times in r intersect all s
--- • max(0, m – n) times in r except all s
+-- • max(0, m - n) times in r except all s
 
 -- Exist and not exist
 -- exists r iff r != phi
@@ -503,8 +494,7 @@ except
 from takes as T
 where S.ID = T.ID));
 
--- The unique construct tests whether a subquery has any duplicate tuples in its
-result.
+-- The unique construct tests whether a subquery has any duplicate tuples in its result.
 -- The unique construct evaluates to “true” if a given subquery contains no duplicates.
 -- Find all courses that were offered at most once in 2009
 select T.course_id
@@ -526,8 +516,7 @@ select department.name
 from department, max_budget
 where department.budget = max_budget.value;
 
--- Find all departments where the total salary is greater than the average
-of the total salary at all departments
+-- Find all departments where the total salary is greater than the average of the total salary at all departments
 
 with dept _total (dept_name, value) as
 (select dept_name, sum(salary)
@@ -631,10 +620,7 @@ WHERE client.client_id IN (
                           WHERE totals > 100000
 );
 
--- Correct the tot_credit attributes for each tuple in student table such that total credit is
-equal to the credit of courses successfully completed by the student. Here successfully
-completed means student has a grade that is not ‘F’ . Students who did not take any
-courses, the output for them should show total credit 0.
+-- Correct the tot_credit attributes for each tuple in student table such that total credit is equal to the credit of courses successfully completed by the student. Here successfully completed means student has a grade that is not ‘F’ . Students who did not take any courses, the output for them should show total credit 0.
 
 update student as ST, (select B.ID, coalesce(B.crd, 0) as cred from (select J.ID, sum(C.credits) as crd from (select N.ID, N.grd, N.course_id from (select M.ID, coalesce(M.grade, 'N') as grd, M.course_id from (select S.ID, S.name, T.course_id, T.grade from student as S left join takes as T on S.ID = T.ID) as M) as N) as J left join course as C on J.course_id = C.course_id where J.grd <> 'F' group by J.ID) as B) as TEMP set tot_cred = TEMP.cred where ST.ID = TEMP.ID;
 
@@ -755,7 +741,7 @@ VALUES(111, 'Pam', 'Beesly', '1988-02-19', 'F', 69000, 106, 3);
 
 DROP TRIGGER my_trigger;
 \end{minted}
-Around last 20 mins of that video show how to convert ER Diagram to actual database schema.
+Around last 12 mins of that video show how to convert ER Diagram to actual database schema.
 
 Entity = An object we want to model and store information about
 
@@ -898,9 +884,12 @@ The grant statement is used to confer authorization
         on <relation name or view name> to <user list>
 \end{minted}
 $<$user list$>$ is:
-a user-id
-public, which allows all valid users the privilege granted
-A role (more on this later)
+
+--  a user-id
+
+-- public, which allows all valid users the privilege granted
+
+-- A role (more on this later)
 
 Granting a privilege on a view does not imply granting any privileges on the underlying relations.
 
@@ -1013,6 +1002,8 @@ users, we append the with grant option clause to the appropriate grant command.
 
 The creator of an object (relation/view/role) holds all privileges on the object,
 including the privilege to grant privileges to others.
+
+\includegraphics[width=0.5\textwidth,height=0.5\textheight,keepaspectratio]{us}
 
 Suppose that the database administrator decides to revoke the authorization of
 user U1. Since U4 has authorization from U1, that authorization should be revoked
