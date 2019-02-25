@@ -24,7 +24,7 @@
 \PYG{k}{set} \PYG{n}{salary} \PYG{o}{=} \PYG{k}{case}
 \PYG{k}{when} \PYG{n}{salary} \PYG{o}{\PYGZlt{}=} \PYG{l+m+mi}{100000} \PYG{k}{then} \PYG{n}{salary} \PYG{o}{*} \PYG{l+m+mi}{1}\PYG{p}{.}\PYG{l+m+mi}{05}
 \PYG{k}{else} \PYG{n}{salary} \PYG{o}{*} \PYG{l+m+mi}{1}\PYG{p}{.}\PYG{l+m+mi}{03}
-\PYG{k}{end}
+\PYG{k}{end}\PYG{p}{;}
 
 \PYG{k}{DELETE} \PYG{k}{FROM} \PYG{n}{student} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} if we put semicolon at the end of this statement then it will delete all of the rows in the table}
 \PYG{k}{WHERE} \PYG{n}{name} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}Tom\PYGZsq{}} \PYG{k}{AND} \PYG{n}{major} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}undecided\PYGZsq{}}\PYG{p}{;}

@@ -31,13 +31,6 @@
 \PYG{k}{REFERENCES} \PYG{n}{employee}\PYG{p}{(}\PYG{n}{emp\PYGZus{}id}\PYG{p}{)}
 \PYG{k}{ON} \PYG{k}{DELETE} \PYG{k}{SET} \PYG{k}{NULL}\PYG{p}{;}
 
-\PYG{k}{CREATE} \PYG{k}{TABLE} \PYG{n}{client} \PYG{p}{(}
-  \PYG{n}{client\PYGZus{}id} \PYG{n+nb}{INT} \PYG{k}{PRIMARY} \PYG{k}{KEY}\PYG{p}{,}
-  \PYG{n}{client\PYGZus{}name} \PYG{n+nb}{VARCHAR}\PYG{p}{(}\PYG{l+m+mi}{40}\PYG{p}{),}
-  \PYG{n}{branch\PYGZus{}id} \PYG{n+nb}{INT}\PYG{p}{,}
-  \PYG{k}{FOREIGN} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{branch\PYGZus{}id}\PYG{p}{)} \PYG{k}{REFERENCES} \PYG{n}{branch}\PYG{p}{(}\PYG{n}{branch\PYGZus{}id}\PYG{p}{)} \PYG{k}{ON} \PYG{k}{DELETE} \PYG{k}{SET} \PYG{k}{NULL}
-\PYG{p}{);}
-
 \PYG{k}{CREATE} \PYG{k}{TABLE} \PYG{n}{works\PYGZus{}with} \PYG{p}{(}
   \PYG{n}{emp\PYGZus{}id} \PYG{n+nb}{INT}\PYG{p}{,}
   \PYG{n}{client\PYGZus{}id} \PYG{n+nb}{INT}\PYG{p}{,}
@@ -46,15 +39,6 @@
   \PYG{k}{FOREIGN} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{emp\PYGZus{}id}\PYG{p}{)} \PYG{k}{REFERENCES} \PYG{n}{employee}\PYG{p}{(}\PYG{n}{emp\PYGZus{}id}\PYG{p}{)} \PYG{k}{ON} \PYG{k}{DELETE} \PYG{k}{CASCADE}\PYG{p}{,}
   \PYG{k}{FOREIGN} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{client\PYGZus{}id}\PYG{p}{)} \PYG{k}{REFERENCES} \PYG{n}{client}\PYG{p}{(}\PYG{n}{client\PYGZus{}id}\PYG{p}{)} \PYG{k}{ON} \PYG{k}{DELETE} \PYG{k}{CASCADE}
 \PYG{p}{);}
-
-\PYG{k}{CREATE} \PYG{k}{TABLE} \PYG{n}{branch\PYGZus{}supplier} \PYG{p}{(}
-  \PYG{n}{branch\PYGZus{}id} \PYG{n+nb}{INT}\PYG{p}{,}
-  \PYG{n}{supplier\PYGZus{}name} \PYG{n+nb}{VARCHAR}\PYG{p}{(}\PYG{l+m+mi}{40}\PYG{p}{),}
-  \PYG{n}{supply\PYGZus{}type} \PYG{n+nb}{VARCHAR}\PYG{p}{(}\PYG{l+m+mi}{40}\PYG{p}{),}
-  \PYG{k}{PRIMARY} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{branch\PYGZus{}id}\PYG{p}{,} \PYG{n}{supplier\PYGZus{}name}\PYG{p}{),}
-  \PYG{k}{FOREIGN} \PYG{k}{KEY}\PYG{p}{(}\PYG{n}{branch\PYGZus{}id}\PYG{p}{)} \PYG{k}{REFERENCES} \PYG{n}{branch}\PYG{p}{(}\PYG{n}{branch\PYGZus{}id}\PYG{p}{)} \PYG{k}{ON} \PYG{k}{DELETE} \PYG{k}{CASCADE}
-\PYG{p}{);}
-
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
 
@@ -67,63 +51,6 @@
 \PYG{k}{SET} \PYG{n}{branch\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{1}
 \PYG{k}{WHERE} \PYG{n}{emp\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{100}\PYG{p}{;}
 
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{101}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Jan\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Levinson\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1961\PYGZhy{}05\PYGZhy{}11\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{110000}\PYG{p}{,} \PYG{l+m+mi}{100}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{);}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Scranton}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{102}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Michael\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Scott\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1964\PYGZhy{}03\PYGZhy{}15\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{75000}\PYG{p}{,} \PYG{l+m+mi}{100}\PYG{p}{,} \PYG{k}{NULL}\PYG{p}{);}
-
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Scranton\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{102}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1992\PYGZhy{}04\PYGZhy{}06\PYGZsq{}}\PYG{p}{);}
-
-\PYG{k}{UPDATE} \PYG{n}{employee}
-\PYG{k}{SET} \PYG{n}{branch\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{2}
-\PYG{k}{WHERE} \PYG{n}{emp\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{102}\PYG{p}{;}
-
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{103}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Angela\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Martin\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1971\PYGZhy{}06\PYGZhy{}25\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{63000}\PYG{p}{,} \PYG{l+m+mi}{102}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{104}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Kelly\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Kapoor\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1980\PYGZhy{}02\PYGZhy{}05\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}F\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{55000}\PYG{p}{,} \PYG{l+m+mi}{102}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{105}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Stanley\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Hudson\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1958\PYGZhy{}02\PYGZhy{}19\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{69000}\PYG{p}{,} \PYG{l+m+mi}{102}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{);}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Stamford}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{106}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Josh\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Porter\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1969\PYGZhy{}09\PYGZhy{}05\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{78000}\PYG{p}{,} \PYG{l+m+mi}{100}\PYG{p}{,} \PYG{k}{NULL}\PYG{p}{);}
-
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Stamford\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{106}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1998\PYGZhy{}02\PYGZhy{}13\PYGZsq{}}\PYG{p}{);}
-
-\PYG{k}{UPDATE} \PYG{n}{employee}
-\PYG{k}{SET} \PYG{n}{branch\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{3}
-\PYG{k}{WHERE} \PYG{n}{emp\PYGZus{}id} \PYG{o}{=} \PYG{l+m+mi}{106}\PYG{p}{;}
-
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{107}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Andy\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Bernard\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1973\PYGZhy{}07\PYGZhy{}22\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{65000}\PYG{p}{,} \PYG{l+m+mi}{106}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{employee} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{108}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Jim\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Halpert\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}1978\PYGZhy{}10\PYGZhy{}01\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}M\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{71000}\PYG{p}{,} \PYG{l+m+mi}{106}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{);}
-
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} BRANCH SUPPLIER}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch\PYGZus{}supplier} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Hammer Mill\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Paper\PYGZsq{}}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch\PYGZus{}supplier} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Uni\PYGZhy{}ball\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Writing Utensils\PYGZsq{}}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch\PYGZus{}supplier} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Patriot Paper\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Paper\PYGZsq{}}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch\PYGZus{}supplier} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}J.T. Forms \PYGZam{} Labels\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Custom Forms\PYGZsq{}}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch\PYGZus{}supplier} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Uni\PYGZhy{}ball\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Writing Utensils\PYGZsq{}}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch\PYGZus{}supplier} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Hammer Mill\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Paper\PYGZsq{}}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{branch\PYGZus{}supplier} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Stamford Lables\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Custom Forms\PYGZsq{}}\PYG{p}{);}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} CLIENT}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{client} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{400}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Dunmore Highschool\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{client} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{401}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Lackawana Country\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{client} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{402}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}FedEx\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{client} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{403}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}John Daly Law, LLC\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{client} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{404}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Scranton Whitepages\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{client} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{405}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Times Newspaper\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{client} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{406}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}FedEx\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{);}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} WORKS\PYGZus{}WITH}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{105}\PYG{p}{,} \PYG{l+m+mi}{400}\PYG{p}{,} \PYG{l+m+mi}{55000}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{102}\PYG{p}{,} \PYG{l+m+mi}{401}\PYG{p}{,} \PYG{l+m+mi}{267000}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{108}\PYG{p}{,} \PYG{l+m+mi}{402}\PYG{p}{,} \PYG{l+m+mi}{22500}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{107}\PYG{p}{,} \PYG{l+m+mi}{403}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{108}\PYG{p}{,} \PYG{l+m+mi}{403}\PYG{p}{,} \PYG{l+m+mi}{12000}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{105}\PYG{p}{,} \PYG{l+m+mi}{404}\PYG{p}{,} \PYG{l+m+mi}{33000}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{107}\PYG{p}{,} \PYG{l+m+mi}{405}\PYG{p}{,} \PYG{l+m+mi}{26000}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{102}\PYG{p}{,} \PYG{l+m+mi}{406}\PYG{p}{,} \PYG{l+m+mi}{15000}\PYG{p}{);}
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{works\PYGZus{}with} \PYG{k}{VALUES}\PYG{p}{(}\PYG{l+m+mi}{105}\PYG{p}{,} \PYG{l+m+mi}{406}\PYG{p}{,} \PYG{l+m+mi}{130000}\PYG{p}{);}
-
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find out all the different genders}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} SQL allows duplication in query results.}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} can use distinct to force elimination.}
@@ -131,8 +58,8 @@
 \PYG{k}{SELECT} \PYG{k}{DISTINCT} \PYG{n}{sex}
 \PYG{k}{FROM} \PYG{n}{employee}\PYG{p}{;}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the total number of instructors who teach a course in the Spring 2010}
-\PYG{n}{semester}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find the total number of instructors who teach a course in the Spring 2010 semester}
+
 \PYG{k}{select} \PYG{k}{count} \PYG{p}{(}\PYG{k}{distinct} \PYG{n}{ID}\PYG{p}{)}
 \PYG{k}{from} \PYG{n}{teaches}
 \PYG{k}{where} \PYG{n}{semester} \PYG{o}{=} \PYG{err}{’}\PYG{n}{Spring}\PYG{err}{’} \PYG{k}{and} \PYG{k}{year} \PYG{o}{=} \PYG{l+m+mi}{2010}\PYG{p}{;}
@@ -259,7 +186,7 @@
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} exists r iff r != phi}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} not exists r iff r == phi}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Yet another way of specifying the query “Find all courses taught in both the Fall 2009 semester and in the Spring 2010 semester”}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Yet another way of specifying the query \PYGZdq{}Find all courses taught in both the Fall 2009 semester and in the Spring 2010 semester\PYGZdq{}}
 
 \PYG{k}{select} \PYG{n}{course\PYGZus{}id}
 \PYG{k}{from} \PYG{n}{section} \PYG{k}{as} \PYG{n}{S}
@@ -282,7 +209,7 @@
 \PYG{k}{where} \PYG{n}{S}\PYG{p}{.}\PYG{n}{ID} \PYG{o}{=} \PYG{n}{T}\PYG{p}{.}\PYG{n}{ID}\PYG{p}{));}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} The unique construct tests whether a subquery has any duplicate tuples in its result.}
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} The unique construct evaluates to “true” if a given subquery contains no duplicates.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} The unique construct evaluates to \PYGZdq{}true\PYGZdq{} if a given subquery contains no duplicates.}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Find all courses that were offered at most once in 2009}
 \PYG{k}{select} \PYG{n}{T}\PYG{p}{.}\PYG{n}{course\PYGZus{}id}
 \PYG{k}{from} \PYG{n}{course} \PYG{k}{as} \PYG{n}{T}
@@ -443,7 +370,7 @@
 \PYG{n}{budget} \PYG{n}{Dollars}\PYG{p}{);}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Views}
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} SQL allows a “virtual relation” to be defined by a query, and the}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} SQL allows a \PYGZdq{}virtual relation\PYGZdq{} to be defined by a query, and the}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} relation conceptually contains the result of the query. The virtual relation is not}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} precomputed and stored, but instead is computed by executing the query whenever the virtual relation is used. Thus if table changes, view changes.}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Any such relation that is not part of the logical model, but is made visible to a user as a virtual relation, is called a view}

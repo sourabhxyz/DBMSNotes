@@ -52,7 +52,7 @@
 
 \PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{student} \PYG{k}{VALUES} \PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Jack\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Biology\PYGZsq{}}\PYG{p}{);}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} add this row, parameters should be given in order}
 
-\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{student} \PYG{p}{(}\PYG{n}{student\PYGZus{}id}\PYG{p}{,} \PYG{n}{name}\PYG{p}{)} \PYG{k}{VALUES} \PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Kate\PYGZsq{}}\PYG{p}{);}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Now we need not include \PYGZsq{}major\PYGZsq{}, it will show \PYGZsq{}NULL\PYGZsq{} in major now.}
+\PYG{k}{INSERT} \PYG{k}{INTO} \PYG{n}{student} \PYG{p}{(}\PYG{n}{student\PYGZus{}id}\PYG{p}{,} \PYG{n}{name}\PYG{p}{)} \PYG{k}{VALUES} \PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Kate\PYGZsq{}}\PYG{p}{);}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Now we need not include \PYGZsq{}major\PYGZsq{}, it will show \PYGZsq{}NULL\PYGZsq{} in major row.}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} add all instructors to the student relation with tot\PYGZus{}creds set to 0}
 \PYG{k}{insert} \PYG{k}{into} \PYG{n}{student}
